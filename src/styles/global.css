@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand surfaces */
+  --color-surface-midnight: #0F0E2E;
+  --color-surface-indigo: #1E1B4B;
+  --color-surface-cream: #F7F3EC;
+
+  /* Accent */
+  --color-accent-gold: #FFD580;
+  --color-accent-gold-deep: #F59E0B;
+
+  /* Lavender palette */
+  --color-lavender-100: #EDE9FE;
+  --color-lavender-300: #C4B5FD;
+  --color-lavender-500: #8B5CF6;
+
+  /* Accents */
+  --color-pink-soft: #FCA5A5;
+  --color-sage-green: #86EFAC;
+  --color-sky: #7DD3FC;
+
+  /* Text */
+  --color-text-primary: #0F0E2E;
+  --color-text-secondary: #64748B;
+
+  /* Fonts */
+  --font-sans: "Inter", "IBM Plex Sans Thai", sans-serif;
+  --font-display: "Anuphan", "Inter", sans-serif;
+}
