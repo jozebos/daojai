@@ -1,0 +1,107 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="404 — หน้านี้หายไปแล้ว | เดาใจ">
+  <main class="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
+    <!-- Star field background -->
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="star star-sm" style="top:12%;left:18%"></div>
+      <div class="star star-md" style="top:25%;left:72%"></div>
+      <div class="star star-lg" style="top:8%;left:55%"></div>
+      <div class="star star-sm" style="top:65%;left:12%"></div>
+      <div class="star star-md" style="top:78%;left:85%"></div>
+      <div class="star star-sm" style="top:45%;left:90%"></div>
+      <div class="star star-lg" style="top:88%;left:35%"></div>
+      <div class="star star-sm" style="top:35%;left:5%"></div>
+    </div>
+
+    <div class="relative z-10 flex flex-col items-center text-center max-w-md">
+      <!-- Floating crystal ball SVG -->
+      <div class="mb-8 animate-float">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-[0_0_24px_rgba(255,213,128,0.3)]">
+          <!-- Glow circle -->
+          <circle cx="60" cy="56" r="42" fill="url(#ballGradient)" opacity="0.9"/>
+          <!-- Glass shine -->
+          <ellipse cx="48" cy="42" rx="14" ry="10" fill="white" opacity="0.12" transform="rotate(-20 48 42)"/>
+          <!-- Stars inside the ball -->
+          <circle cx="50" cy="50" r="2" fill="#FFD580" opacity="0.7"/>
+          <circle cx="68" cy="58" r="1.5" fill="#C4B5FD" opacity="0.8"/>
+          <circle cx="55" cy="68" r="1.2" fill="#FFD580" opacity="0.5"/>
+          <circle cx="72" cy="45" r="1" fill="#FCA5A5" opacity="0.6"/>
+          <!-- Question mark -->
+          <text x="60" y="62" text-anchor="middle" fill="#FFD580" font-family="Anuphan, sans-serif" font-size="28" font-weight="700" opacity="0.6">?</text>
+          <!-- Base/stand -->
+          <ellipse cx="60" cy="98" rx="22" ry="6" fill="#1E1B4B" stroke="rgba(255,213,128,0.3)" stroke-width="1"/>
+          <path d="M48 96 Q54 88 60 96 Q66 88 72 96" fill="none" stroke="rgba(196,181,253,0.3)" stroke-width="1.5"/>
+          <!-- Outer ring -->
+          <circle cx="60" cy="56" r="42" fill="none" stroke="url(#ringGradient)" stroke-width="1.5" opacity="0.5"/>
+          <defs>
+            <radialGradient id="ballGradient" cx="0.4" cy="0.35" r="0.65">
+              <stop offset="0%" stop-color="#2E2A5E"/>
+              <stop offset="100%" stop-color="#0F0E2E"/>
+            </radialGradient>
+            <linearGradient id="ringGradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFD580"/>
+              <stop offset="100%" stop-color="#C4B5FD"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- 404 number -->
+      <h1 class="font-display text-7xl font-bold bg-gradient-to-r from-accent-gold to-lavender-300 bg-clip-text text-transparent mb-4">
+        404
+      </h1>
+
+      <!-- Thai message -->
+      <p class="font-display text-xl text-lavender-100 mb-2">
+        โอ๊ย! หน้านี้หายไปแล้ว
+      </p>
+      <p class="text-text-muted text-sm mb-8 leading-relaxed">
+        ดูเหมือนดวงดาวจะพาคุณหลงทาง... <br/>
+        ไม่เป็นไร เรากลับหน้าแรกกันเถอะ ✨
+      </p>
+
+      <!-- Back to home button -->
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-accent-gold to-accent-gold-deep text-surface-midnight font-semibold text-sm shadow-glow-gold hover:scale-105 transition-transform duration-200"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 1.25l-7 6.5h3.5V14h3V9.75h1V14h3V7.75H15L8 1.25z"/>
+        </svg>
+        กลับหน้าแรก
+      </a>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  .star-sm {
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 213, 128, 0.5);
+    animation-duration: 2.5s;
+  }
+  .star-md {
+    width: 5px;
+    height: 5px;
+    background: rgba(196, 181, 253, 0.6);
+    animation-duration: 3.5s;
+  }
+  .star-lg {
+    width: 7px;
+    height: 7px;
+    background: rgba(255, 213, 128, 0.7);
+    animation-duration: 4s;
+  }
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+</style>

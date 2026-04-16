@@ -1,0 +1,74 @@
+---
+import AppLayout from "@/layouts/AppLayout.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("th-TH", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+---
+
+<AppLayout title="บทความ — เดาใจ" description="บทความเกี่ยวกับดวง ไพ่ทาโรต์ ราศี เลขศาสตร์ และเคล็ดลับการดูดวง">
+  <section class="py-8 md:py-12">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-accent-gold mb-3">
+        ✨ บทความ
+      </h1>
+      <p class="text-text-secondary dark:text-text-muted max-w-lg mx-auto">
+        เรียนรู้เรื่องดวง ไพ่ทาโรต์ ราศี เลขศาสตร์ และอีกมากมาย
+      </p>
+    </div>
+
+    <!-- Post Grid -->
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <a
+          href={`/blog/${post.id}`}
+          class="group block rounded-2xl bg-white/5 dark:bg-surface-indigo/40 border border-lavender-300/10 hover:border-accent-gold/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-glow-gold overflow-hidden"
+        >
+          {/* Color strip */}
+          <div class="h-1.5 bg-gradient-to-r from-accent-gold to-lavender-500" />
+
+          <div class="p-5 md:p-6">
+            {/* Tags */}
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              {post.data.tags.slice(0, 3).map((tag) => (
+                <span class="text-xs px-2 py-0.5 rounded-full bg-lavender-500/10 text-lavender-300 border border-lavender-300/15">
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {/* Title */}
+            <h2 class="font-display font-bold text-lg md:text-xl text-text-primary dark:text-text-on-dark group-hover:text-accent-gold transition-colors mb-2 line-clamp-2">
+              {post.data.title}
+            </h2>
+
+            {/* Description */}
+            <p class="text-sm text-text-secondary dark:text-text-muted line-clamp-3 mb-4 leading-relaxed">
+              {post.data.description}
+            </p>
+
+            {/* Footer */}
+            <div class="flex items-center justify-between text-xs text-text-muted">
+              <time datetime={post.data.date.toISOString()}>
+                {formatDate(post.data.date)}
+              </time>
+              <span class="text-accent-gold group-hover:translate-x-1 transition-transform">
+                อ่านต่อ →
+              </span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</AppLayout>

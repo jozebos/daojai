@@ -1,0 +1,26 @@
+---
+import AppLayout from "@/layouts/AppLayout.astro";
+import DailyCard from "@/components/tarot/DailyCard.tsx";
+---
+
+<AppLayout title="ไพ่ประจำวัน — เดาใจ | DaoJai">
+  <section class="flex flex-col items-center pt-6 pb-12 md:pt-12">
+
+    <a href="/tarot" class="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-lavender-300 transition-colors mb-6 self-start">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      กลับหน้าไพ่
+    </a>
+
+    <h1 class="font-display font-bold text-2xl sm:text-3xl text-accent-gold mb-2 text-center animate-[fade-in-up_0.8s_ease-out_both]">
+      ไพ่ประจำวัน
+    </h1>
+    <p class="text-lavender-300/70 text-sm text-center mb-8 animate-[fade-in-up_0.8s_ease-out_0.1s_both]">
+      แตะไพ่เพื่อเปิดข้อความจากจักรวาล
+    </p>
+
+    <DailyCard client:load />
+
+  </section>
+</AppLayout>

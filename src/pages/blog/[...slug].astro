@@ -1,0 +1,221 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import TopNav from "@/components/navigation/TopNav.astro";
+import BottomNav from "@/components/navigation/BottomNav.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("th-TH", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+// Estimate reading time (~200 words/min for Thai)
+function estimateReadingTime(body: string): number {
+  const words = body.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+// Access raw body from the post's rendered content isn't directly available,
+// so we estimate from description length as a fallback
+const readingTime = 4; // ~800 words / 200 wpm
+---
+
+<BaseLayout title={`${post.data.title} — เดาใจ`} description={post.data.description}>
+  <TopNav />
+
+  <article class="min-h-screen pt-0 pb-20 md:pt-20 md:pb-8">
+    {/* Hero header */}
+    <header class="px-4 pt-6 pb-8 md:pt-8 md:pb-12 max-w-3xl mx-auto">
+      {/* Back link */}
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-1.5 text-sm text-lavender-300 hover:text-accent-gold transition-colors mb-6"
+      >
+        ← กลับไปบทความทั้งหมด
+      </a>
+
+      {/* Tags */}
+      <div class="flex flex-wrap gap-1.5 mb-4">
+        {post.data.tags.map((tag) => (
+          <span class="text-xs px-2.5 py-1 rounded-full bg-lavender-500/10 text-lavender-300 border border-lavender-300/15">
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      {/* Title */}
+      <h1 class="font-display text-2xl md:text-4xl font-bold text-text-primary dark:text-text-on-dark leading-tight mb-4">
+        {post.data.title}
+      </h1>
+
+      {/* Meta */}
+      <div class="flex flex-wrap items-center gap-3 text-sm text-text-muted">
+        <time datetime={post.data.date.toISOString()}>
+          📅 {formatDate(post.data.date)}
+        </time>
+        <span>·</span>
+        <span>⏱️ อ่าน {readingTime} นาที</span>
+        <span>·</span>
+        <span>✍️ {post.data.author}</span>
+      </div>
+    </header>
+
+    {/* Divider */}
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="h-px bg-gradient-to-r from-transparent via-lavender-300/20 to-transparent mb-8" />
+    </div>
+
+    {/* Content */}
+    <div class="blog-content max-w-3xl mx-auto px-4">
+      <Content />
+    </div>
+
+    {/* Footer links */}
+    <footer class="max-w-3xl mx-auto px-4 mt-12">
+      <div class="h-px bg-gradient-to-r from-transparent via-lavender-300/20 to-transparent mb-8" />
+
+      <div class="rounded-2xl bg-surface-indigo/30 border border-lavender-300/10 p-6 md:p-8">
+        <h3 class="font-display font-bold text-lg text-accent-gold mb-4">
+          ✨ ลองฟีเจอร์อื่นของเดาใจ
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <a href="/horoscope" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface-midnight/40 hover:bg-surface-midnight/60 border border-lavender-300/8 hover:border-accent-gold/20 transition-all text-center">
+            <span class="text-2xl">🔮</span>
+            <span class="text-xs text-text-muted">ดูดวงรายวัน</span>
+          </a>
+          <a href="/tarot" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface-midnight/40 hover:bg-surface-midnight/60 border border-lavender-300/8 hover:border-accent-gold/20 transition-all text-center">
+            <span class="text-2xl">🃏</span>
+            <span class="text-xs text-text-muted">ไพ่ทาโรต์</span>
+          </a>
+          <a href="/compatibility" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface-midnight/40 hover:bg-surface-midnight/60 border border-lavender-300/8 hover:border-accent-gold/20 transition-all text-center">
+            <span class="text-2xl">💕</span>
+            <span class="text-xs text-text-muted">เช็คดวงคู่</span>
+          </a>
+          <a href="/birth-chart" class="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface-midnight/40 hover:bg-surface-midnight/60 border border-lavender-300/8 hover:border-accent-gold/20 transition-all text-center">
+            <span class="text-2xl">⭐</span>
+            <span class="text-xs text-text-muted">ดวงวันเกิด</span>
+          </a>
+        </div>
+      </div>
+
+      {/* Back to blog */}
+      <div class="text-center mt-8">
+        <a
+          href="/blog"
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-lavender-500/10 text-lavender-300 border border-lavender-300/20 hover:border-accent-gold/30 hover:text-accent-gold transition-all"
+        >
+          ← กลับไปบทความทั้งหมด
+        </a>
+      </div>
+    </footer>
+  </article>
+
+  <BottomNav />
+</BaseLayout>
+
+<style is:global>
+  /* Blog typography for Thai content */
+  .blog-content {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text-on-dark);
+  }
+
+  .blog-content h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-accent-gold);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(196, 181, 253, 0.12);
+  }
+
+  .blog-content h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-lavender-100);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-content p {
+    margin-bottom: 1.25rem;
+    opacity: 0.9;
+  }
+
+  .blog-content strong {
+    color: var(--color-accent-gold);
+    font-weight: 600;
+  }
+
+  .blog-content a {
+    color: var(--color-lavender-300);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+  }
+
+  .blog-content a:hover {
+    color: var(--color-accent-gold);
+  }
+
+  .blog-content ul,
+  .blog-content ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+
+  .blog-content li {
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+  }
+
+  .blog-content ul li {
+    list-style-type: disc;
+  }
+
+  .blog-content ol li {
+    list-style-type: decimal;
+  }
+
+  .blog-content blockquote {
+    border-left: 3px solid var(--color-accent-gold);
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+    background: rgba(255, 213, 128, 0.05);
+    border-radius: 0 0.5rem 0.5rem 0;
+    font-style: italic;
+    opacity: 0.9;
+  }
+
+  .blog-content hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(196, 181, 253, 0.2), transparent);
+    margin: 2rem 0;
+  }
+
+  .blog-content code {
+    background: rgba(139, 92, 246, 0.1);
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+  }
+</style>

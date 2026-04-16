@@ -1,0 +1,374 @@
+---
+import type { GetStaticPaths } from "astro";
+import AppLayout from "@/layouts/AppLayout.astro";
+import {
+  WESTERN_ZODIAC_SIGNS,
+  type ZodiacSignKey,
+  type WesternElement,
+} from "@/lib/astrology/zodiac";
+import { generateDailyHoroscope, type DailyHoroscope } from "@/lib/horoscope/daily";
+import { HOROSCOPE_CATEGORY_LABELS, type HoroscopeCategory, type HoroscopeScore } from "@/lib/horoscope/templates";
+import { formatThaiDate, getThaiDayName } from "@/lib/utils/date";
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return WESTERN_ZODIAC_SIGNS.map((sign) => ({
+    params: { sign: sign.key },
+    props: { sign },
+  }));
+};
+
+const { sign } = Astro.props;
+const today = new Date();
+const horoscope: DailyHoroscope = generateDailyHoroscope(sign.key as ZodiacSignKey, today);
+const thaiDate = formatThaiDate(today);
+const thaiDay = getThaiDayName(today);
+
+const CATEGORY_ICONS: Record<HoroscopeCategory, string> = {
+  love: "💕",
+  career: "💼",
+  money: "💰",
+  health: "🌿",
+  luck: "🍀",
+};
+
+const CATEGORY_ORDER: HoroscopeCategory[] = ["love", "career", "money", "health", "luck"];
+
+function renderStars(score: HoroscopeScore): string {
+  return "★".repeat(score) + "☆".repeat(5 - score);
+}
+
+const ELEMENT_ACCENT: Record<WesternElement, { text: string; bg: string; glow: string }> = {
+  fire: { text: "text-accent-gold", bg: "bg-accent-gold/10", glow: "shadow-glow-gold" },
+  earth: { text: "text-sage-green", bg: "bg-sage-green/10", glow: "" },
+  air: { text: "text-lavender-300", bg: "bg-lavender-300/10", glow: "shadow-glow-lavender" },
+  water: { text: "text-sky", bg: "bg-sky/10", glow: "" },
+};
+
+const accent = ELEMENT_ACCENT[sign.element as WesternElement];
+
+const title = `ดวงราศี${sign.name_th}วันนี้ • เดาใจ`;
+const description = `ดวงราศี${sign.name_th} (${sign.name_en}) วันนี้ ${thaiDate} — ${horoscope.overviewText.slice(0, 100)}`;
+---
+
+<AppLayout title={title} description={description}>
+  <Fragment slot="default">
+    <div class="pt-4 pb-12 md:pt-8 max-w-2xl mx-auto">
+
+      {/* ── Back link ── */}
+      <a
+        href="/horoscope"
+        class="inline-flex items-center gap-1.5 text-sm text-text-muted dark:text-text-muted hover:text-accent-gold dark:hover:text-accent-gold transition-colors mb-6"
+        aria-label="กลับไปหน้ารวมราศี"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        ดวงรายวัน
+      </a>
+
+      {/* ── Sign Header ── */}
+      <header class="sign-header text-center mb-8 animate-[fade-in-up_0.6s_ease-out_both]">
+        <span class={`zodiac-hero-symbol ${accent.text}`} aria-hidden="true">
+          {sign.symbol}
+        </span>
+        <h1 class="font-display font-bold text-3xl sm:text-4xl text-text-primary dark:text-lavender-100 mb-1">
+          ราศี{sign.name_th}
+        </h1>
+        <p class="text-sm text-text-secondary dark:text-text-muted tracking-wide mb-3">
+          {sign.name_en}
+        </p>
+        <p class="inline-flex items-center gap-2 text-xs text-text-muted dark:text-text-muted/70 bg-surface-cream dark:bg-surface-indigo/50 px-4 py-1.5 rounded-full border border-lavender-100/20 dark:border-lavender-500/10">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          วัน{thaiDay}ที่ {thaiDate}
+        </p>
+      </header>
+
+      {/* ── Overview ── */}
+      <section
+        class="overview-card mb-6 animate-[fade-in-up_0.6s_ease-out_0.1s_both]"
+        aria-label="ภาพรวมดวงวันนี้"
+      >
+        <h2 class="sr-only">ภาพรวม</h2>
+        <p class="text-base sm:text-lg text-text-primary dark:text-lavender-100/90 leading-relaxed font-sans">
+          {horoscope.overviewText}
+        </p>
+      </section>
+
+      {/* ── Category Scores ── */}
+      <section class="mb-8" aria-label="คะแนนดวงแต่ละด้าน">
+        <h2 class="font-display font-bold text-lg text-text-primary dark:text-lavender-100 mb-4 animate-[fade-in-up_0.6s_ease-out_0.15s_both]">
+          ดวงแต่ละด้าน
+        </h2>
+        <div class="space-y-3">
+          {CATEGORY_ORDER.map((cat, i) => (
+            <div
+              class="category-card animate-[fade-in-up_0.5s_ease-out_both]"
+              style={`animation-delay: ${0.2 + i * 0.06}s`}
+              aria-label={`${HOROSCOPE_CATEGORY_LABELS[cat]}: ${horoscope.scores[cat]} จาก 5 ดาว`}
+            >
+              <div class="flex items-start gap-3">
+                <span class="category-icon flex-shrink-0" aria-hidden="true">
+                  {CATEGORY_ICONS[cat]}
+                </span>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="font-display font-bold text-sm text-text-primary dark:text-lavender-100">
+                      {HOROSCOPE_CATEGORY_LABELS[cat]}
+                    </span>
+                    <span
+                      class="star-rating text-accent-gold dark:text-accent-gold text-sm tracking-wider"
+                      aria-hidden="true"
+                    >
+                      {renderStars(horoscope.scores[cat])}
+                    </span>
+                  </div>
+                  <p class="text-sm text-text-secondary dark:text-text-muted/80 leading-relaxed">
+                    {horoscope.categoryMessages[cat]}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Lucky Items ── */}
+      <section
+        class="lucky-section mb-8 animate-[fade-in-up_0.6s_ease-out_0.5s_both]"
+        aria-label="สิ่งมงคลประจำวัน"
+      >
+        <h2 class="font-display font-bold text-lg text-text-primary dark:text-lavender-100 mb-4">
+          สิ่งมงคลวันนี้
+        </h2>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="lucky-item" aria-label={`สีมงคล: ${horoscope.luckyColor}`}>
+            <span class="lucky-label">สีมงคล</span>
+            <span class="lucky-value">{horoscope.luckyColor}</span>
+          </div>
+          <div class="lucky-item" aria-label={`เลขมงคล: ${horoscope.luckyNumber}`}>
+            <span class="lucky-label">เลขมงคล</span>
+            <span class="lucky-value font-display font-bold text-xl">{horoscope.luckyNumber}</span>
+          </div>
+          <div class="lucky-item" aria-label={`ทิศมงคล: ${horoscope.luckyDirection}`}>
+            <span class="lucky-label">ทิศมงคล</span>
+            <span class="lucky-value">{horoscope.luckyDirection}</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Advice ── */}
+      <section
+        class="advice-card mb-6 animate-[fade-in-up_0.6s_ease-out_0.55s_both]"
+        aria-label="คำแนะนำประจำวัน"
+      >
+        <h2 class="font-display font-bold text-lg text-text-primary dark:text-lavender-100 mb-3">
+          คำแนะนำ
+        </h2>
+        <p class="text-base text-text-primary dark:text-lavender-100/90 leading-relaxed">
+          {horoscope.adviceText}
+        </p>
+      </section>
+
+      {/* ── Mantra ── */}
+      <section
+        class="mantra-card animate-[fade-in-up_0.6s_ease-out_0.6s_both]"
+        aria-label="มนตราประจำวัน"
+      >
+        <div class="mantra-inner">
+          <span class="mantra-deco" aria-hidden="true">✦</span>
+          <h2 class="font-display font-bold text-sm text-accent-gold/80 dark:text-accent-gold/70 mb-2 tracking-widest uppercase">
+            มนตราวันนี้
+          </h2>
+          <p class="font-display text-lg sm:text-xl text-text-primary dark:text-lavender-100 leading-relaxed text-center italic">
+            "{horoscope.adviceText.split("ลองดูเรื่อง")[0].trim().replace(/ถ้าวันนี้จะโฟกัสเพิ่มอีกนิด /, "")}"
+          </p>
+          <span class="mantra-deco" aria-hidden="true">✦</span>
+        </div>
+      </section>
+
+      {/* ── Back CTA ── */}
+      <div class="text-center mt-10 animate-[fade-in-up_0.6s_ease-out_0.65s_both]">
+        <a
+          href="/horoscope"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium text-text-secondary dark:text-lavender-300 bg-surface-cream dark:bg-surface-indigo/50 border border-lavender-100/20 dark:border-lavender-500/10 hover:border-accent-gold/30 hover:text-accent-gold dark:hover:text-accent-gold transition-all duration-300"
+          aria-label="ดูดวงราศีอื่น"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          ดูราศีอื่น
+        </a>
+      </div>
+
+    </div>
+  </Fragment>
+</AppLayout>
+
+<style>
+  /* ── Hero Symbol ── */
+  .zodiac-hero-symbol {
+    display: block;
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    filter: drop-shadow(0 4px 16px rgba(255, 213, 128, 0.25));
+    animation: float 5s ease-in-out infinite;
+  }
+
+  /* ── Overview Card ── */
+  .overview-card {
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    background: rgba(247, 243, 236, 0.5);
+    border: 1px solid rgba(30, 27, 75, 0.05);
+  }
+
+  :global(.dark) .overview-card {
+    background: rgba(30, 27, 75, 0.4);
+    border-color: rgba(196, 181, 253, 0.1);
+  }
+
+  /* ── Category Cards ── */
+  .category-card {
+    padding: 1rem 1.25rem;
+    border-radius: 1rem;
+    background: rgba(247, 243, 236, 0.4);
+    border: 1px solid rgba(30, 27, 75, 0.04);
+    transition: all 0.3s ease;
+  }
+
+  :global(.dark) .category-card {
+    background: rgba(30, 27, 75, 0.35);
+    border-color: rgba(196, 181, 253, 0.08);
+  }
+
+  .category-card:hover {
+    background: rgba(247, 243, 236, 0.7);
+    border-color: rgba(30, 27, 75, 0.08);
+    transform: translateX(4px);
+  }
+
+  :global(.dark) .category-card:hover {
+    background: rgba(30, 27, 75, 0.55);
+    border-color: rgba(196, 181, 253, 0.15);
+  }
+
+  .category-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    margin-top: 0.125rem;
+  }
+
+  .star-rating {
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 8px rgba(255, 213, 128, 0.3);
+  }
+
+  /* ── Lucky Items ── */
+  .lucky-section {
+    /* inherits spacing from parent */
+  }
+
+  .lucky-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 1.25rem 0.75rem;
+    border-radius: 1rem;
+    background: rgba(247, 243, 236, 0.5);
+    border: 1px solid rgba(30, 27, 75, 0.04);
+    transition: all 0.3s ease;
+  }
+
+  :global(.dark) .lucky-item {
+    background: rgba(30, 27, 75, 0.4);
+    border-color: rgba(196, 181, 253, 0.1);
+  }
+
+  .lucky-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 213, 128, 0.2);
+  }
+
+  :global(.dark) .lucky-item:hover {
+    border-color: rgba(255, 213, 128, 0.25);
+  }
+
+  .lucky-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .lucky-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  :global(.dark) .lucky-value {
+    color: var(--color-accent-gold);
+  }
+
+  /* ── Advice Card ── */
+  .advice-card {
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    background: rgba(247, 243, 236, 0.5);
+    border: 1px solid rgba(30, 27, 75, 0.05);
+  }
+
+  :global(.dark) .advice-card {
+    background: rgba(30, 27, 75, 0.4);
+    border-color: rgba(196, 181, 253, 0.1);
+  }
+
+  /* ── Mantra Card ── */
+  .mantra-card {
+    padding: 2px;
+    border-radius: 1.5rem;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 213, 128, 0.3),
+      rgba(196, 181, 253, 0.2),
+      rgba(255, 213, 128, 0.15)
+    );
+  }
+
+  :global(.dark) .mantra-card {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 213, 128, 0.25),
+      rgba(196, 181, 253, 0.15),
+      rgba(255, 213, 128, 0.1)
+    );
+  }
+
+  .mantra-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem 1.5rem;
+    border-radius: calc(1.5rem - 2px);
+    background: rgba(247, 243, 236, 0.9);
+  }
+
+  :global(.dark) .mantra-inner {
+    background: rgba(15, 14, 46, 0.85);
+  }
+
+  .mantra-deco {
+    font-size: 0.75rem;
+    color: var(--color-accent-gold);
+    opacity: 0.5;
+  }
+</style>

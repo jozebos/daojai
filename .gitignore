@@ -16,6 +16,9 @@ dist/
 .env.*
 !.env.example
 
+# AI-generated tarot images (126MB — too large for git, use SVG placeholders)
+src/assets/tarot/*.png
+
 # OS
 .DS_Store
 Thumbs.db

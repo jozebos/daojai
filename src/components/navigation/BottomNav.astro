@@ -1,0 +1,99 @@
+---
+const currentPath = Astro.url.pathname;
+
+const tabs = [
+  {
+    label: "วันนี้",
+    href: "/",
+    ariaLabel: "วันนี้ — ดูดวงประจำวัน",
+    icon: "star",
+  },
+  {
+    label: "ไพ่",
+    href: "/tarot",
+    ariaLabel: "ไพ่ — เปิดไพ่ทาโรต์",
+    icon: "cards",
+  },
+  {
+    label: "คู่",
+    href: "/compatibility",
+    ariaLabel: "คู่ — เช็คดวงคู่",
+    icon: "hearts",
+  },
+  {
+    label: "ของฉัน",
+    href: "/birth-chart/me",
+    ariaLabel: "ของฉัน — โปรไฟล์",
+    icon: "user",
+  },
+  {
+    label: "ตั้งค่า",
+    href: "/settings",
+    ariaLabel: "ตั้งค่า — ปรับแต่ง",
+    icon: "gear",
+  },
+] as const;
+
+function isActive(href: string): boolean {
+  if (href === "/") return currentPath === "/";
+  return currentPath.startsWith(href);
+}
+---
+
+<nav
+  class="fixed bottom-0 inset-x-0 z-50 md:hidden bg-white/80 dark:bg-surface-indigo/90 backdrop-blur-xl border-t border-lavender-100/20 dark:border-lavender-500/10"
+  style="padding-bottom: env(safe-area-inset-bottom, 0px);"
+  aria-label="เมนูหลัก"
+  role="navigation"
+>
+  <div class="flex items-center justify-around h-16 max-w-lg mx-auto px-2">
+    {tabs.map((tab) => {
+      const active = isActive(tab.href);
+      return (
+        <a
+          href={tab.href}
+          class:list={[
+            "flex flex-col items-center justify-center gap-0.5 py-2 px-3 rounded-xl transition-all duration-200",
+            active
+              ? "text-accent-gold scale-105"
+              : "text-text-secondary dark:text-text-muted hover:text-lavender-300",
+          ]}
+          aria-label={tab.ariaLabel}
+          aria-current={active ? "page" : undefined}
+        >
+          <span class:list={["transition-transform duration-200", active && "scale-110"]}>
+            {tab.icon === "star" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            )}
+            {tab.icon === "cards" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="14" height="18" rx="2" />
+                <path d="M18 8h2a2 2 0 012 2v10a2 2 0 01-2 2h-2" />
+              </svg>
+            )}
+            {tab.icon === "hearts" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z" />
+              </svg>
+            )}
+            {tab.icon === "user" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            )}
+            {tab.icon === "gear" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+              </svg>
+            )}
+          </span>
+          <span class="text-[10px] font-medium leading-none">{tab.label}</span>
+        </a>
+      );
+    })}
+  </div>
+</nav>

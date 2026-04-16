@@ -1,5 +1,10 @@
 name = "daojai"
 compatibility_date = "2025-12-01"
+main = "dist/server/entry.mjs"
+no_bundle = true
 
 [assets]
-directory = "./dist"
+directory = "dist/client"
+binding = "ASSETS"
+
+[vars]

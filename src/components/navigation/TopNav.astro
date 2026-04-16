@@ -1,0 +1,68 @@
+---
+import ThemeToggle from "@/components/ThemeToggle.tsx";
+
+const currentPath = Astro.url.pathname;
+
+const links = [
+  { label: "วันนี้", href: "/" },
+  { label: "ไพ่ทาโรต์", href: "/tarot" },
+  { label: "เช็คคู่", href: "/compatibility" },
+  { label: "แผนที่ดาว", href: "/birth-chart" },
+  { label: "บล็อก", href: "/blog" },
+] as const;
+
+function isActive(href: string): boolean {
+  if (href === "/") return currentPath === "/";
+  return currentPath.startsWith(href);
+}
+---
+
+<header
+  class="hidden md:block fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-surface-midnight/90 backdrop-blur-xl border-b border-lavender-100/20 dark:border-lavender-500/10"
+  role="banner"
+>
+  <nav class="flex items-center justify-between h-16 max-w-6xl mx-auto px-6" aria-label="เมนูหลัก">
+    <a href="/" class="flex items-center gap-2 group" aria-label="เดาใจ — กลับหน้าแรก">
+      <span class="text-lg">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path
+            d="M14 2l2.47 5.01L22 8.01l-4 3.9.94 5.5L14 14.62l-4.94 2.79.94-5.5-4-3.9 5.53-1L14 2z"
+            fill="currentColor"
+            class="text-accent-gold"
+          />
+          <path
+            d="M14 16c-1.1 0-2.1.45-2.83 1.17A3.99 3.99 0 0010 20c0 2.21 1.79 4 4 4s4-1.79 4-4c0-1.1-.45-2.1-1.17-2.83A3.99 3.99 0 0014 16z"
+            fill="currentColor"
+            class="text-pink-soft"
+            opacity="0.8"
+          />
+        </svg>
+      </span>
+      <span class="font-display font-bold text-xl text-accent-gold group-hover:text-accent-gold-deep transition-colors">
+        เดาใจ
+      </span>
+    </a>
+
+    <div class="flex items-center gap-1">
+      {links.map((link) => {
+        const active = isActive(link.href);
+        return (
+          <a
+            href={link.href}
+            class:list={[
+              "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+              active
+                ? "text-accent-gold bg-accent-gold/10"
+                : "text-text-secondary dark:text-text-muted hover:text-accent-gold hover:bg-accent-gold/5",
+            ]}
+            aria-current={active ? "page" : undefined}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+    </div>
+
+    <ThemeToggle client:load />
+  </nav>
+</header>

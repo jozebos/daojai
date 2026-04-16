@@ -1,0 +1,26 @@
+---
+import AppLayout from "@/layouts/AppLayout.astro";
+import ThreeCardSpread from "@/components/tarot/ThreeCardSpread.tsx";
+---
+
+<AppLayout title="ไพ่ 3 ใบ — เดาใจ | DaoJai">
+  <section class="flex flex-col items-center pt-6 pb-12 md:pt-12">
+
+    <a href="/tarot" class="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-lavender-300 transition-colors mb-6 self-start">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      กลับหน้าไพ่
+    </a>
+
+    <h1 class="font-display font-bold text-2xl sm:text-3xl text-lavender-100 mb-2 text-center animate-[fade-in-up_0.8s_ease-out_both]">
+      ไพ่ 3 ใบ
+    </h1>
+    <p class="text-lavender-300/70 text-sm text-center mb-8 animate-[fade-in-up_0.8s_ease-out_0.1s_both]">
+      อดีต · ปัจจุบัน · อนาคต
+    </p>
+
+    <ThreeCardSpread client:load />
+
+  </section>
+</AppLayout>

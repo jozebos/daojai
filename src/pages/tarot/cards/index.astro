@@ -1,0 +1,156 @@
+---
+import AppLayout from "@/layouts/AppLayout.astro";
+import { TAROT_DECK, MAJOR_ARCANA, type TarotSuitKey } from "@/lib/tarot/deck";
+
+const SUIT_META: Record<TarotSuitKey, { name_th: string; color: string }> = {
+  wands: { name_th: "ไม้เท้า", color: "#F59E0B" },
+  cups: { name_th: "ถ้วย", color: "#7DD3FC" },
+  swords: { name_th: "ดาบ", color: "#C4B5FD" },
+  pentacles: { name_th: "เหรียญ", color: "#86EFAC" },
+};
+
+const ELEMENT_GRADIENT: Record<string, string> = {
+  fire: "linear-gradient(135deg, #F59E0B22, #DC262622)",
+  water: "linear-gradient(135deg, #7DD3FC22, #8B5CF622)",
+  air: "linear-gradient(135deg, #C4B5FD22, #7DD3FC22)",
+  earth: "linear-gradient(135deg, #86EFAC22, #F59E0B22)",
+  spirit: "linear-gradient(135deg, #FFD58022, #C4B5FD22)",
+};
+
+const suits: TarotSuitKey[] = ["wands", "cups", "swords", "pentacles"];
+const minorBySuit = suits.map((s) => ({
+  key: s,
+  ...SUIT_META[s],
+  cards: TAROT_DECK.filter((c) => c.suit === s),
+}));
+---
+
+<AppLayout title="สารานุกรมไพ่ 78 ใบ — เดาใจ | DaoJai">
+  <section class="pt-6 pb-12 md:pt-12">
+
+    <a href="/tarot" class="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-lavender-300 transition-colors mb-6">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
+      กลับหน้าไพ่
+    </a>
+
+    <h1 class="font-display font-bold text-2xl sm:text-3xl text-accent-gold mb-2 animate-[fade-in-up_0.8s_ease-out_both]">
+      สารานุกรมไพ่ 78 ใบ
+    </h1>
+    <p class="text-text-muted text-sm mb-10 animate-[fade-in-up_0.8s_ease-out_0.1s_both]">
+      ไพ่ Major Arcana 22 ใบ + Minor Arcana 56 ใบ
+    </p>
+
+    <div class="mb-12 animate-[fade-in-up_0.8s_ease-out_0.2s_both]">
+      <h2 class="font-display font-bold text-lg text-lavender-100 mb-4 flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full bg-gradient-to-br from-accent-gold to-lavender-500"></span>
+        Major Arcana
+        <span class="text-xs text-text-muted font-normal">({MAJOR_ARCANA.length} ใบ)</span>
+      </h2>
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+        {MAJOR_ARCANA.map((card) => (
+          <a
+            href={`/tarot/cards/${card.id}`}
+            class="encyclopedia-card group"
+            aria-label={`${card.name_th} — ${card.name_en}`}
+          >
+            <div
+              class="encyclopedia-card-image"
+              style={`background: ${ELEMENT_GRADIENT[card.element]};`}
+            >
+              <span class="encyclopedia-card-number">{card.number}</span>
+            </div>
+            <span class="encyclopedia-card-name">{card.name_th}</span>
+            <span class="encyclopedia-card-name-en">{card.name_en}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {minorBySuit.map((suit, suitIdx) => (
+      <div class="mb-12 animate-[fade-in-up_0.8s_ease-out_both]" style={`animation-delay: ${0.25 + suitIdx * 0.1}s;`}>
+        <h2 class="font-display font-bold text-lg text-lavender-100 mb-4 flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full" style={`background: ${suit.color};`}></span>
+          {suit.name_th} ({suit.key.charAt(0).toUpperCase() + suit.key.slice(1)})
+          <span class="text-xs text-text-muted font-normal">({suit.cards.length} ใบ)</span>
+        </h2>
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+          {suit.cards.map((card) => (
+            <a
+              href={`/tarot/cards/${card.id}`}
+              class="encyclopedia-card group"
+              aria-label={`${card.name_th} — ${card.name_en}`}
+            >
+              <div
+                class="encyclopedia-card-image"
+                style={`background: ${ELEMENT_GRADIENT[card.element]};`}
+              >
+                <span class="encyclopedia-card-number">{card.number}</span>
+              </div>
+              <span class="encyclopedia-card-name">{card.name_th}</span>
+              <span class="encyclopedia-card-name-en">{card.name_en}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+
+  </section>
+</AppLayout>
+
+<style>
+  .encyclopedia-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 0.75rem;
+    background: rgba(30, 27, 75, 0.3);
+    border: 1px solid rgba(196, 181, 253, 0.08);
+    transition: all 0.25s ease;
+    text-decoration: none;
+  }
+
+  .encyclopedia-card:hover {
+    background: rgba(30, 27, 75, 0.5);
+    border-color: rgba(196, 181, 253, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(15, 14, 46, 0.4);
+  }
+
+  .encyclopedia-card-image {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .encyclopedia-card-number {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: rgba(247, 243, 236, 0.5);
+  }
+
+  .encyclopedia-card-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.7rem;
+    color: var(--color-lavender-100);
+    line-height: 1.3;
+    margin-bottom: 0.125rem;
+  }
+
+  .encyclopedia-card-name-en {
+    font-size: 0.6rem;
+    color: var(--color-text-muted);
+    line-height: 1.2;
+  }
+</style>

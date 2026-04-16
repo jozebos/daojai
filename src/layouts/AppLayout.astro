@@ -1,0 +1,20 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import TopNav from "@/components/navigation/TopNav.astro";
+import BottomNav from "@/components/navigation/BottomNav.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <TopNav />
+  <main class="min-h-screen pt-0 pb-20 md:pt-20 md:pb-8 px-4 max-w-6xl mx-auto">
+    <slot />
+  </main>
+  <BottomNav />
+</BaseLayout>

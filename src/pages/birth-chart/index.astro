@@ -1,0 +1,8 @@
+---
+import AppLayout from "@/layouts/AppLayout.astro";
+import BirthProfile from "@/components/birth-chart/BirthProfile.tsx";
+---
+
+<AppLayout title="ดูดวงวันเกิด • เดาใจ" description="ดูดวงจากวันเกิด — ราศี ทักษา เลขชีวิต และดวงประจำวัน แผนที่ดาวส่วนตัวของคุณ">
+  <BirthProfile client:load />
+</AppLayout>

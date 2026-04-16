@@ -1,0 +1,8 @@
+---
+import AppLayout from "@/layouts/AppLayout.astro";
+import CompatCheck from "@/components/compatibility/CompatCheck.tsx";
+---
+
+<AppLayout title="เช็คดวงคู่ • เดาใจ" description="เช็คความเข้ากันกับคนที่คุณสนใจ วิเคราะห์จาก 5 ระบบดวงดาว">
+  <CompatCheck client:load />
+</AppLayout>
