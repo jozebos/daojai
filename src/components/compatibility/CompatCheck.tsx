@@ -58,6 +58,9 @@ export default function CompatCheck() {
   const [dateA, setDateA] = useState("");
   const [dateB, setDateB] = useState("");
   const [result, setResult] = useState<CompatibilityResult | null>(null);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied">("idle");
+  const [feedback, setFeedback] = useState<"none" | "liked" | "disliked">("none");
+  const [saved, setSaved] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -83,9 +86,11 @@ export default function CompatCheck() {
     setDateA("");
     setDateB("");
     setRelType("lover");
+    setCopyStatus("idle");
+    setFeedback("none");
+    setSaved(false);
   }
 
-  /* ── LOADING ── */
   if (step === "loading") {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-[fade-in-up_0.5s_ease-out_both]">
@@ -140,15 +145,58 @@ export default function CompatCheck() {
     );
   }
 
-  /* ── RESULTS ── */
   if (step === "results" && result) {
     const { overall, tier, breakdown, greenFlags, redFlags, advice } = result;
     const displayNameA = nameA || "คนที่ 1";
     const displayNameB = nameB || "คนที่ 2";
 
+    const shareText = `เช็คดวงคู่ได้ ${overall}% จาก #เดาใจ 💕 ลองเช็คคู่ของคุณที่ daojai.com/compatibility`;
+
+    async function handleShare() {
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: "เช็คดวงคู่ — เดาใจ", text: shareText, url: "https://daojai.com/compatibility" });
+        } catch { /* user cancelled */ }
+      } else {
+        handleCopy();
+      }
+    }
+
+    async function handleCopy() {
+      try {
+        await navigator.clipboard.writeText(shareText);
+        setCopyStatus("copied");
+        setTimeout(() => setCopyStatus("idle"), 2000);
+      } catch { /* clipboard unavailable */ }
+    }
+
+    function handleFeedback(liked: boolean) {
+      setFeedback(liked ? "liked" : "disliked");
+      try {
+        const today = new Date().toISOString().split("T")[0];
+        localStorage.setItem(
+          `daojai-feedback-compatibility-${today}`,
+          JSON.stringify({ type: "compatibility", liked, timestamp: new Date().toISOString() }),
+        );
+      } catch { /* localStorage unavailable */ }
+    }
+
+    function handleSave() {
+      try {
+        const raw = localStorage.getItem("daojai-reading-history") || "[]";
+        const history = JSON.parse(raw);
+        history.push({
+          type: "compatibility",
+          date: new Date().toISOString(),
+          data: { overall, dateA, dateB, nameA: displayNameA, nameB: displayNameB },
+        });
+        localStorage.setItem("daojai-reading-history", JSON.stringify(history));
+        setSaved(true);
+      } catch { /* localStorage unavailable */ }
+    }
+
     return (
       <div className="max-w-lg mx-auto space-y-6 animate-[fade-in-up_0.6s_ease-out_both]">
-        {/* Header */}
         <div className="text-center space-y-1 pt-2">
           <p className="text-sm text-text-muted font-display">
             {displayNameA} & {displayNameB}
@@ -159,7 +207,6 @@ export default function CompatCheck() {
           </p>
         </div>
 
-        {/* Big Score */}
         <div className="relative flex flex-col items-center py-8">
           <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
             <div
@@ -196,7 +243,6 @@ export default function CompatCheck() {
           </p>
         </div>
 
-        {/* Dimension Bars */}
         <div
           className="rounded-2xl p-5 space-y-4"
           style={{
@@ -234,9 +280,7 @@ export default function CompatCheck() {
           })}
         </div>
 
-        {/* Flags */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Green */}
           <div
             className="rounded-2xl p-4 space-y-2"
             style={{
@@ -260,7 +304,6 @@ export default function CompatCheck() {
             </ul>
           </div>
 
-          {/* Red */}
           <div
             className="rounded-2xl p-4 space-y-2"
             style={{
@@ -287,7 +330,6 @@ export default function CompatCheck() {
           </div>
         </div>
 
-        {/* Advice */}
         <div
           className="rounded-2xl p-5"
           style={{
@@ -305,7 +347,56 @@ export default function CompatCheck() {
           <p className="text-sm text-text-muted leading-relaxed">{advice}</p>
         </div>
 
-        {/* Reset */}
+        <div className="daojai-share-section">
+          <p className="daojai-share-title">แชร์ผลดวงคู่</p>
+          <div className="daojai-share-actions">
+            <button type="button" onClick={handleShare} className="daojai-share-btn daojai-share-btn--gold">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              แชร์
+            </button>
+            <button type="button" onClick={handleCopy} className="daojai-share-btn daojai-share-btn--subtle">
+              {copyStatus === "copied" ? (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  คัดลอกแล้ว!
+                </>
+              ) : (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                  </svg>
+                  คัดลอกลิงก์
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div className="daojai-feedback-section">
+          {feedback === "none" ? (
+            <>
+              <button type="button" onClick={() => handleFeedback(true)} className="daojai-feedback-btn">👍 ตรง!</button>
+              <button type="button" onClick={() => handleFeedback(false)} className="daojai-feedback-btn">👎 ไม่ตรง</button>
+            </>
+          ) : (
+            <span className="daojai-feedback-thanks">บันทึกแล้ว ขอบคุณ! ✨</span>
+          )}
+        </div>
+
+        {!saved ? (
+          <button type="button" onClick={handleSave} className="daojai-save-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
+            </svg>
+            บันทึกผลไว้ดูย้อนหลัง?
+          </button>
+        ) : (
+          <p className="daojai-save-toast">บันทึกแล้ว! ดูย้อนหลังได้ที่หน้า &lsquo;ของฉัน&rsquo; ✨</p>
+        )}
+
         <div className="flex justify-center pb-4">
           <button
             type="button"
@@ -323,13 +414,11 @@ export default function CompatCheck() {
     );
   }
 
-  /* ── FORM ── */
   return (
     <form
       onSubmit={handleSubmit}
       className="max-w-lg mx-auto space-y-6 animate-[fade-in-up_0.5s_ease-out_both]"
     >
-      {/* Page title */}
       <div className="text-center space-y-1 pt-2">
         <h1 className="font-display font-bold text-2xl sm:text-3xl text-accent-gold">
           เช็คดวงคู่
@@ -339,7 +428,6 @@ export default function CompatCheck() {
         </p>
       </div>
 
-      {/* Relationship Type */}
       <fieldset className="space-y-2">
         <legend className="font-display text-sm text-lavender-300 mb-2">
           ความสัมพันธ์
@@ -369,7 +457,6 @@ export default function CompatCheck() {
         </div>
       </fieldset>
 
-      {/* Person A */}
       <div
         className="rounded-2xl p-4 space-y-3"
         style={{
@@ -403,12 +490,11 @@ export default function CompatCheck() {
             value={dateA}
             onChange={(e) => setDateA(e.target.value)}
             className="w-full px-3 py-2.5 rounded-xl text-sm bg-surface-midnight/60 text-text-on-dark border border-lavender-500/10 focus:border-accent-gold/40 focus:outline-none focus:ring-1 focus:ring-accent-gold/20 transition-colors"
-            style={{ colorScheme: "dark" }}
+            style={{ colorScheme: "dark", color: "#EDE9FE" }}
           />
         </div>
       </div>
 
-      {/* Versus divider */}
       <div className="flex items-center justify-center" aria-hidden="true">
         <div className="w-8 h-8 rounded-full flex items-center justify-center bg-lavender-500/10 border border-lavender-500/15">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-lavender-300">
@@ -417,7 +503,6 @@ export default function CompatCheck() {
         </div>
       </div>
 
-      {/* Person B */}
       <div
         className="rounded-2xl p-4 space-y-3"
         style={{
@@ -451,12 +536,11 @@ export default function CompatCheck() {
             value={dateB}
             onChange={(e) => setDateB(e.target.value)}
             className="w-full px-3 py-2.5 rounded-xl text-sm bg-surface-midnight/60 text-text-on-dark border border-lavender-500/10 focus:border-accent-gold/40 focus:outline-none focus:ring-1 focus:ring-accent-gold/20 transition-colors"
-            style={{ colorScheme: "dark" }}
+            style={{ colorScheme: "dark", color: "#EDE9FE" }}
           />
         </div>
       </div>
 
-      {/* Submit */}
       <button
         type="submit"
         className="w-full py-3.5 rounded-full font-display font-bold text-base text-surface-midnight bg-gradient-to-r from-accent-gold to-accent-gold-deep shadow-[0_0_24px_rgba(255,213,128,0.3)] hover:shadow-[0_0_40px_rgba(255,213,128,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer"

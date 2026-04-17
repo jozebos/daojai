@@ -26,6 +26,9 @@ export default function DailyCard() {
   const [draw, setDraw] = useState<DailyTarotDraw | null>(null);
   const [flipped, setFlipped] = useState(false);
   const [animating, setAnimating] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied">("idle");
+  const [feedback, setFeedback] = useState<"none" | "liked" | "disliked">("none");
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     const userId = getOrCreateUserId();
@@ -47,6 +50,52 @@ export default function DailyCard() {
   const meaning = getTarotMeaningByOrientation(draw);
   const isReversed = orientation === "reversed";
   const colors = ELEMENT_COLORS[card.element] ?? ELEMENT_COLORS.spirit;
+  const today = toDateKey(new Date());
+
+  const shareText = `วันนี้ได้ไพ่ ${card.name_th} (${card.name_en}) จาก #เดาใจ 🔮 ลองดูดวงของคุณที่ daojai.com/tarot/daily`;
+  const shareUrl = "https://daojai.com/tarot/daily";
+
+  async function handleShare() {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `ไพ่ประจำวัน: ${card.name_th}`, text: shareText, url: shareUrl });
+      } catch { /* cancelled */ }
+    } else {
+      handleCopy();
+    }
+  }
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopyStatus("copied");
+      setTimeout(() => setCopyStatus("idle"), 2000);
+    } catch { /* clipboard unavailable */ }
+  }
+
+  function handleFeedback(liked: boolean) {
+    setFeedback(liked ? "liked" : "disliked");
+    try {
+      localStorage.setItem(
+        `daojai-feedback-daily-tarot-${today}`,
+        JSON.stringify({ type: "daily-tarot", liked, timestamp: new Date().toISOString(), cardId: card.id }),
+      );
+    } catch { /* localStorage unavailable */ }
+  }
+
+  function handleSave() {
+    try {
+      const raw = localStorage.getItem("daojai-reading-history") || "[]";
+      const history = JSON.parse(raw);
+      history.push({
+        type: "daily-tarot",
+        date: new Date().toISOString(),
+        data: { cardId: card.id, cardName: card.name_th, cardNameEn: card.name_en, orientation },
+      });
+      localStorage.setItem("daojai-reading-history", JSON.stringify(history));
+      setSaved(true);
+    } catch { /* localStorage unavailable */ }
+  }
 
   return (
     <div className="flex flex-col items-center w-full max-w-sm mx-auto">
@@ -162,29 +211,60 @@ export default function DailyCard() {
 
           <p className="daily-card-meaning-text">{meaning}</p>
 
-          <div className="daily-card-actions">
-            <button
-              type="button"
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({
-                    title: `ไพ่ประจำวัน: ${card.name_th}`,
-                    text: `วันนี้ได้ไพ่ ${card.name_th} (${card.name_en}) — ${card.keywords_th.join(", ")}`,
-                    url: window.location.href,
-                  }).catch(() => {});
-                }
-              }}
-              className="daily-card-btn daily-card-btn--share"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="18" cy="5" r="3" />
-                <circle cx="6" cy="12" r="3" />
-                <circle cx="18" cy="19" r="3" />
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+          {/* Share Section */}
+          <div className="daojai-share-section">
+            <p className="daojai-share-title">แชร์ผลให้เพื่อนดู</p>
+            <div className="daojai-share-actions">
+              <button type="button" onClick={handleShare} className="daojai-share-btn daojai-share-btn--gold">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                แชร์
+              </button>
+              <button type="button" onClick={handleCopy} className="daojai-share-btn daojai-share-btn--subtle">
+                {copyStatus === "copied" ? (
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                    คัดลอกแล้ว!
+                  </>
+                ) : (
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                    </svg>
+                    คัดลอกลิงก์
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Feedback */}
+          <div className="daojai-feedback-section">
+            {feedback === "none" ? (
+              <>
+                <button type="button" onClick={() => handleFeedback(true)} className="daojai-feedback-btn">👍 ตรง!</button>
+                <button type="button" onClick={() => handleFeedback(false)} className="daojai-feedback-btn">👎 ไม่ตรง</button>
+              </>
+            ) : (
+              <span className="daojai-feedback-thanks">บันทึกแล้ว ขอบคุณ! ✨</span>
+            )}
+          </div>
+
+          {/* Save Prompt */}
+          {!saved ? (
+            <button type="button" onClick={handleSave} className="daojai-save-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
               </svg>
-              แชร์
+              บันทึกผลไว้ดูย้อนหลัง?
             </button>
+          ) : (
+            <p className="daojai-save-toast">บันทึกแล้ว! ดูย้อนหลังได้ที่หน้า &lsquo;ของฉัน&rsquo; ✨</p>
+          )}
+
+          <div className="daily-card-actions" style={{ marginTop: "0.75rem" }}>
             <a
               href={`/tarot/cards/${card.id}`}
               className="daily-card-btn daily-card-btn--detail"

@@ -76,6 +76,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Prevent iOS auto-zoom on input focus (requires >= 16px) */
+input, select, textarea {
+  font-size: 16px;
+}
+
+/* Dark mode date inputs */
+.dark input[type="date"] {
+  color-scheme: dark;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -638,4 +648,126 @@ astro-island:not([ssr]) {
 
 .spread-action-btn--primary:hover {
   background: rgba(255, 213, 128, 0.2);
+}
+
+/* ── Shared: Share / Feedback / Save ── */
+
+.daojai-share-section {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.daojai-share-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--color-lavender-300);
+  margin-bottom: 0.75rem;
+}
+
+.daojai-share-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.daojai-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.daojai-share-btn--gold {
+  background: rgba(255, 213, 128, 0.12);
+  color: var(--color-accent-gold);
+  border: 1px solid rgba(255, 213, 128, 0.25);
+}
+
+.daojai-share-btn--gold:hover {
+  background: rgba(255, 213, 128, 0.22);
+  box-shadow: 0 0 16px rgba(255, 213, 128, 0.15);
+}
+
+.daojai-share-btn--subtle {
+  background: rgba(196, 181, 253, 0.08);
+  color: var(--color-lavender-300);
+  border: 1px solid rgba(196, 181, 253, 0.15);
+}
+
+.daojai-share-btn--subtle:hover {
+  background: rgba(196, 181, 253, 0.16);
+}
+
+.daojai-feedback-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.daojai-feedback-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: rgba(30, 27, 75, 0.4);
+  border: 1px solid rgba(196, 181, 253, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.daojai-feedback-btn:hover {
+  background: rgba(30, 27, 75, 0.6);
+  border-color: rgba(196, 181, 253, 0.25);
+  color: var(--color-lavender-100);
+}
+
+.daojai-feedback-thanks {
+  font-size: 0.75rem;
+  color: var(--color-sage-green);
+  font-weight: 500;
+}
+
+.daojai-save-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: rgba(30, 27, 75, 0.3);
+  border: 1px dashed rgba(196, 181, 253, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.daojai-save-btn:hover {
+  background: rgba(30, 27, 75, 0.5);
+  border-color: rgba(255, 213, 128, 0.25);
+  color: var(--color-lavender-300);
+}
+
+.daojai-save-toast {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-sage-green);
+  font-weight: 500;
+  padding: 0.5rem 0;
 }

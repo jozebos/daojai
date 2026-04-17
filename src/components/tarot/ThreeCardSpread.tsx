@@ -51,6 +51,9 @@ export default function ThreeCardSpread() {
   const [selected, setSelected] = useState<number[]>([]);
   const [revealedIdx, setRevealedIdx] = useState<number>(0);
   const shuffleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied">("idle");
+  const [feedback, setFeedback] = useState<"none" | "liked" | "disliked">("none");
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     if (!category) return;
@@ -101,7 +104,57 @@ export default function ThreeCardSpread() {
     setSpread([]);
     setSelected([]);
     setRevealedIdx(0);
+    setCopyStatus("idle");
+    setFeedback("none");
+    setSaved(false);
   }, []);
+
+  const shareText = spread.length >= 3
+    ? `ไพ่ 3 ใบของวันนี้: ${spread[0].card.name_th}, ${spread[1].card.name_th}, ${spread[2].card.name_th} จาก #เดาใจ 🔮`
+    : "";
+
+  async function handleShare() {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "ไพ่ 3 ใบจากเดาใจ", text: shareText, url: "https://daojai.com/tarot/3-card" });
+      } catch { /* user cancelled */ }
+    } else {
+      handleCopy();
+    }
+  }
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopyStatus("copied");
+      setTimeout(() => setCopyStatus("idle"), 2000);
+    } catch { /* clipboard unavailable */ }
+  }
+
+  function handleFeedback(liked: boolean) {
+    setFeedback(liked ? "liked" : "disliked");
+    try {
+      const today = toDateKey(new Date());
+      localStorage.setItem(
+        `daojai-feedback-3-card-${today}`,
+        JSON.stringify({ type: "3-card", liked, timestamp: new Date().toISOString() }),
+      );
+    } catch { /* localStorage unavailable */ }
+  }
+
+  function handleSave() {
+    try {
+      const raw = localStorage.getItem("daojai-reading-history") || "[]";
+      const history = JSON.parse(raw);
+      history.push({
+        type: "3-card",
+        date: new Date().toISOString(),
+        data: { cards: spread.map((s) => ({ cardId: s.card.id, cardName: s.card.name_th, orientation: s.orientation })) },
+      });
+      localStorage.setItem("daojai-reading-history", JSON.stringify(history));
+      setSaved(true);
+    } catch { /* localStorage unavailable */ }
+  }
 
   if (step === "category") {
     return (
@@ -333,36 +386,63 @@ export default function ThreeCardSpread() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3 mt-6">
+          <div className="daojai-share-section">
+            <p className="daojai-share-title">แชร์ผลไพ่ 3 ใบ</p>
+            <div className="daojai-share-actions">
+              <button type="button" onClick={handleShare} className="daojai-share-btn daojai-share-btn--gold">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                แชร์
+              </button>
+              <button type="button" onClick={handleCopy} className="daojai-share-btn daojai-share-btn--subtle">
+                {copyStatus === "copied" ? (
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                    คัดลอกแล้ว!
+                  </>
+                ) : (
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                    </svg>
+                    คัดลอกลิงก์
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          <div className="daojai-feedback-section">
+            {feedback === "none" ? (
+              <>
+                <button type="button" onClick={() => handleFeedback(true)} className="daojai-feedback-btn">👍 ตรง!</button>
+                <button type="button" onClick={() => handleFeedback(false)} className="daojai-feedback-btn">👎 ไม่ตรง</button>
+              </>
+            ) : (
+              <span className="daojai-feedback-thanks">บันทึกแล้ว ขอบคุณ! ✨</span>
+            )}
+          </div>
+
+          {!saved ? (
+            <button type="button" onClick={handleSave} className="daojai-save-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
+              </svg>
+              บันทึกผลไว้ดูย้อนหลัง?
+            </button>
+          ) : (
+            <p className="daojai-save-toast">บันทึกแล้ว! ดูย้อนหลังได้ที่หน้า &lsquo;ของฉัน&rsquo; ✨</p>
+          )}
+
+          <div className="flex flex-col sm:flex-row items-center gap-3 mt-4">
             <button
               type="button"
               onClick={handleReset}
               className="spread-action-btn spread-action-btn--secondary"
             >
               เปิดไพ่ใหม่
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                const names = spread.map((s) => s.card.name_th).join(", ");
-                if (navigator.share) {
-                  navigator.share({
-                    title: "ไพ่ 3 ใบจากเดาใจ",
-                    text: `ได้ไพ่: ${names}`,
-                    url: window.location.href,
-                  }).catch(() => {});
-                }
-              }}
-              className="spread-action-btn spread-action-btn--primary"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="18" cy="5" r="3" />
-                <circle cx="6" cy="12" r="3" />
-                <circle cx="18" cy="19" r="3" />
-                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-              </svg>
-              แชร์ผลไพ่
             </button>
           </div>
         </div>

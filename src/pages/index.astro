@@ -1,5 +1,11 @@
 ---
 import AppLayout from "@/layouts/AppLayout.astro";
+
+const TOP_SIGNS = [
+  { symbol: "♌", name: "สิงห์", hint: "โชคลาภมาเยือน", color: "#F59E0B" },
+  { symbol: "♏", name: "พิจิก", hint: "ความรักสดใส", color: "#C4B5FD" },
+  { symbol: "♓", name: "มีน", hint: "การงานก้าวหน้า", color: "#7DD3FC" },
+];
 ---
 
 <AppLayout title="เดาใจ — เดาใจเขา เดาใจคุณ | DaoJai">
@@ -13,9 +19,11 @@ import AppLayout from "@/layouts/AppLayout.astro";
     <div class="noise-home" aria-hidden="true"></div>
 
     <div class="relative z-10">
-      <!-- Compact Hero -->
-      <section class="flex flex-col items-center justify-center pt-8 pb-6 sm:pt-12 sm:pb-8 text-center max-w-3xl mx-auto">
-        <div class="flex items-center gap-3 mb-3 animate-[fade-in-up_0.6s_ease-out_both]">
+      <!-- Hero with radial glow -->
+      <section class="flex flex-col items-center justify-center pt-8 pb-6 sm:pt-12 sm:pb-8 text-center max-w-3xl mx-auto relative">
+        <div class="hero-glow" aria-hidden="true"></div>
+
+        <div class="flex items-center gap-3 mb-3 animate-[fade-in-up_0.6s_ease-out_both] relative z-10">
           <svg width="40" height="40" viewBox="0 0 80 80" fill="none" class="animate-[float_4s_ease-in-out_infinite] flex-shrink-0" aria-hidden="true">
             <path
               d="M40 8l7.05 14.31L62 25.38l-11.43 11.14L53.24 52 40 44.83 26.76 52l2.67-15.48L18 25.38l14.95-3.07L40 8z"
@@ -33,17 +41,19 @@ import AppLayout from "@/layouts/AppLayout.astro";
           </h1>
         </div>
 
-        <p class="text-lg sm:text-xl text-lavender-300 font-display mb-1 animate-[fade-in-up_0.6s_ease-out_0.15s_both]">
+        <p class="text-lg sm:text-xl text-lavender-300 font-display mb-1 animate-[fade-in-up_0.6s_ease-out_0.15s_both] relative z-10">
           เดาใจเขา เดาใจคุณ
         </p>
-        <p class="text-xs sm:text-sm text-text-muted tracking-wide animate-[fade-in-up_0.6s_ease-out_0.25s_both]">
+        <p class="text-xs sm:text-sm text-text-muted tracking-wide animate-[fade-in-up_0.6s_ease-out_0.25s_both] relative z-10">
           Read the stars, hear your heart
         </p>
       </section>
 
-      <!-- Quick Action Grid -->
-      <section class="max-w-2xl mx-auto pb-8">
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+      <!-- Quick Action Grid with gradient backdrop -->
+      <section class="max-w-2xl mx-auto pb-6 relative">
+        <div class="grid-backdrop" aria-hidden="true"></div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 relative z-10">
           <a href="/horoscope" class="action-card group" style="animation-delay: 0.05s;" aria-label="ดูดวงรายวัน — เลือกราศีดูดวงวันนี้">
             <span class="action-icon" aria-hidden="true">🔮</span>
             <h2 class="action-title">ดูดวงรายวัน</h2>
@@ -87,6 +97,46 @@ import AppLayout from "@/layouts/AppLayout.astro";
           </a>
         </div>
       </section>
+
+      <!-- Top Zodiac Today -->
+      <section class="max-w-2xl mx-auto pb-8 animate-[fade-in-up_0.6s_ease-out_0.4s_both]">
+        <h3 class="font-display font-bold text-sm text-lavender-300 text-center mb-4 tracking-wide">
+          ✨ ดูดวงยอดฮิตวันนี้
+        </h3>
+        <div class="grid grid-cols-3 gap-3">
+          {TOP_SIGNS.map((sign, i) => (
+            <a
+              href="/horoscope"
+              class="top-zodiac-card"
+              style={`animation-delay: ${0.45 + i * 0.08}s; --glow-color: ${sign.color};`}
+            >
+              <span class="top-zodiac-rank">#{i + 1}</span>
+              <span class="top-zodiac-symbol">{sign.symbol}</span>
+              <span class="top-zodiac-name">{sign.name}</span>
+              <span class="top-zodiac-hint">{sign.hint}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="max-w-2xl mx-auto pb-6 pt-4 border-t border-lavender-500/10 animate-[fade-in-up_0.6s_ease-out_0.5s_both]">
+        <div class="flex flex-col items-center gap-3 text-center">
+          <p class="text-sm text-lavender-300/70 font-display">
+            สร้างด้วย ✨ โดยเดาใจ
+          </p>
+          <div class="flex items-center gap-4">
+            <a href="#" class="text-text-muted hover:text-accent-gold transition-colors text-xs">Facebook</a>
+            <span class="text-lavender-500/20">|</span>
+            <a href="#" class="text-text-muted hover:text-accent-gold transition-colors text-xs">Twitter</a>
+            <span class="text-lavender-500/20">|</span>
+            <a href="#" class="text-text-muted hover:text-accent-gold transition-colors text-xs">Instagram</a>
+          </div>
+          <p class="text-[11px] text-text-muted/50">
+            © 2025 เดาใจ DaoJai — เพื่อนสนิทที่รู้เรื่องดวง
+          </p>
+        </div>
+      </footer>
     </div>
   </div>
 </AppLayout>
@@ -97,6 +147,28 @@ import AppLayout from "@/layouts/AppLayout.astro";
       0 0 16px rgba(255, 213, 128, 0.4),
       0 0 48px rgba(255, 213, 128, 0.2);
     animation: pulse-glow 4s ease-in-out infinite, fade-in-up 0.6s ease-out both;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 213, 128, 0.12) 0%, rgba(139, 92, 246, 0.06) 40%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .grid-backdrop {
+    position: absolute;
+    inset: -20px -10px;
+    border-radius: 2rem;
+    background: linear-gradient(180deg, rgba(30, 27, 75, 0.25) 0%, rgba(15, 14, 46, 0.4) 100%);
+    filter: blur(1px);
+    pointer-events: none;
   }
 
   /* ── Action Cards ── */
@@ -116,6 +188,7 @@ import AppLayout from "@/layouts/AppLayout.astro";
     animation: fade-in-up 0.6s ease-out both;
     text-decoration: none;
     overflow: hidden;
+    box-shadow: 0 2px 16px rgba(15, 14, 46, 0.3), 0 0 1px rgba(255, 213, 128, 0.05);
   }
 
   .action-card::before {
@@ -142,7 +215,8 @@ import AppLayout from "@/layouts/AppLayout.astro";
     transform: translateY(-3px);
     box-shadow:
       0 8px 32px rgba(15, 14, 46, 0.5),
-      0 0 20px rgba(255, 213, 128, 0.06);
+      0 0 24px rgba(255, 213, 128, 0.08),
+      0 0 2px rgba(196, 181, 253, 0.15);
   }
 
   .action-card:active {
@@ -187,13 +261,76 @@ import AppLayout from "@/layouts/AppLayout.astro";
     transform: translateX(2px);
   }
 
+  /* ── Top Zodiac Cards ── */
+
+  .top-zodiac-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1rem 0.75rem;
+    border-radius: 1rem;
+    background: rgba(30, 27, 75, 0.35);
+    border: 1px solid rgba(196, 181, 253, 0.1);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    animation: fade-in-up 0.6s ease-out both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .top-zodiac-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--glow-color, rgba(255, 213, 128, 0.3));
+    opacity: 0.5;
+  }
+
+  .top-zodiac-card:hover {
+    background: rgba(30, 27, 75, 0.55);
+    border-color: rgba(255, 213, 128, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(15, 14, 46, 0.4), 0 0 12px color-mix(in srgb, var(--glow-color) 15%, transparent);
+  }
+
+  .top-zodiac-rank {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.65rem;
+    color: var(--color-accent-gold);
+    opacity: 0.7;
+  }
+
+  .top-zodiac-symbol {
+    font-size: 1.75rem;
+    line-height: 1;
+  }
+
+  .top-zodiac-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--color-lavender-100);
+  }
+
+  .top-zodiac-hint {
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+  }
+
   /* ── Subtle Star Field ── */
 
   .star-field-home {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.4;
   }
 
   .stars-home-sm, .stars-home-md {
@@ -214,9 +351,7 @@ import AppLayout from "@/layouts/AppLayout.astro";
     box-shadow:
       25px 50px white, 80px 120px white, 150px 30px white, 200px 180px white,
       320px 80px white, 400px 150px white, 50px 250px white, 180px 300px white,
-      350px 220px white, 500px 100px white, 600px 200px white, 700px 50px white,
-      120px 400px white, 450px 350px white, 550px 280px white, 680px 380px white,
-      230px 500px white, 380px 450px white, 90px 550px white, 520px 520px white;
+      350px 220px white, 500px 100px white, 600px 200px white, 700px 50px white;
     animation: twinkle 3s ease-in-out infinite;
   }
 
@@ -225,8 +360,7 @@ import AppLayout from "@/layouts/AppLayout.astro";
     height: 2px;
     box-shadow:
       60px 80px white, 200px 50px white, 350px 180px white, 500px 250px white,
-      100px 350px white, 450px 120px white, 650px 320px white, 300px 480px white,
-      550px 400px white, 750px 180px white;
+      100px 350px white, 450px 120px white, 650px 320px white;
     animation: twinkle-slow 5s ease-in-out infinite;
     animation-delay: 1s;
   }
@@ -251,6 +385,10 @@ import AppLayout from "@/layouts/AppLayout.astro";
     }
     .action-title {
       font-size: 1.05rem;
+    }
+    .hero-glow {
+      width: 480px;
+      height: 480px;
     }
   }
 </style>

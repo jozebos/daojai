@@ -89,6 +89,9 @@ export default function BirthProfile() {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [activeTab, setActiveTab] = useState<TabKey>("zodiac");
   const [transitioning, setTransitioning] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied">("idle");
+  const [feedback, setFeedback] = useState<"none" | "liked" | "disliked">("none");
+  const [saved, setSaved] = useState(false);
 
   // Load saved data from localStorage
   useEffect(() => {
@@ -209,7 +212,7 @@ export default function BirthProfile() {
                 required
                 max={new Date().toISOString().split("T")[0]}
                 className="w-full px-4 py-3 rounded-xl bg-surface-indigo/60 border border-lavender-500/20 text-text-on-dark focus:outline-none focus:border-accent-gold/50 focus:ring-1 focus:ring-accent-gold/30 transition-all"
-                style={{ colorScheme: "dark" }}
+                style={{ colorScheme: "dark", color: "#EDE9FE" }}
               />
             </div>
 
@@ -226,12 +229,57 @@ export default function BirthProfile() {
     );
   }
 
-  // ─── Results State ───
   const displayName = name.trim() || "คุณ";
+
+  const shareText = profile
+    ? `ราศี${profile.zodiac.name_th} เลขชีวิต ${profile.lifePathNumber} จาก #เดาใจ ⭐ ดูดวงวันเกิดที่ daojai.com/birth-chart`
+    : "";
+
+  async function handleShare() {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "ดวงวันเกิด — เดาใจ", text: shareText, url: "https://daojai.com/birth-chart" });
+      } catch { /* user cancelled */ }
+    } else {
+      handleCopy();
+    }
+  }
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopyStatus("copied");
+      setTimeout(() => setCopyStatus("idle"), 2000);
+    } catch { /* clipboard unavailable */ }
+  }
+
+  function handleFeedback(liked: boolean) {
+    setFeedback(liked ? "liked" : "disliked");
+    try {
+      const today = new Date().toISOString().split("T")[0];
+      localStorage.setItem(
+        `daojai-feedback-birth-chart-${today}`,
+        JSON.stringify({ type: "birth-chart", liked, timestamp: new Date().toISOString() }),
+      );
+    } catch { /* localStorage unavailable */ }
+  }
+
+  function handleSave() {
+    try {
+      const raw = localStorage.getItem("daojai-reading-history") || "[]";
+      const history = JSON.parse(raw);
+      history.push({
+        type: "birth-chart",
+        date: new Date().toISOString(),
+        data: { dateStr: profile!.dateStr, zodiac: profile!.zodiac.name_th, lifePathNumber: profile!.lifePathNumber },
+      });
+      localStorage.setItem("daojai-reading-history", JSON.stringify(history));
+      setSaved(true);
+    } catch { /* localStorage unavailable */ }
+  }
 
   return (
     <div className="max-w-2xl mx-auto animate-[fade-in-up_0.5s_ease-out_both]">
-      {/* Profile Header */}
       <div className="text-center mb-6">
         <p className="text-text-muted text-sm mb-1">
           {profile.thaiDateFormatted}
@@ -281,6 +329,58 @@ export default function BirthProfile() {
         {activeTab === "taksa" && <TaksaTab data={profile} />}
         {activeTab === "lifepath" && <LifePathTab data={profile} />}
         {activeTab === "thaiday" && <ThaiDayTab data={profile} />}
+      </div>
+
+      <div className="mt-8 space-y-4">
+        <div className="daojai-share-section">
+          <p className="daojai-share-title">แชร์โปรไฟล์ดวงของคุณ</p>
+          <div className="daojai-share-actions">
+            <button type="button" onClick={handleShare} className="daojai-share-btn daojai-share-btn--gold">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              แชร์
+            </button>
+            <button type="button" onClick={handleCopy} className="daojai-share-btn daojai-share-btn--subtle">
+              {copyStatus === "copied" ? (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  คัดลอกแล้ว!
+                </>
+              ) : (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                  </svg>
+                  คัดลอกลิงก์
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div className="daojai-feedback-section">
+          {feedback === "none" ? (
+            <>
+              <button type="button" onClick={() => handleFeedback(true)} className="daojai-feedback-btn">👍 ตรง!</button>
+              <button type="button" onClick={() => handleFeedback(false)} className="daojai-feedback-btn">👎 ไม่ตรง</button>
+            </>
+          ) : (
+            <span className="daojai-feedback-thanks">บันทึกแล้ว ขอบคุณ! ✨</span>
+          )}
+        </div>
+
+        {!saved ? (
+          <button type="button" onClick={handleSave} className="daojai-save-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
+            </svg>
+            บันทึกผลไว้ดูย้อนหลัง?
+          </button>
+        ) : (
+          <p className="daojai-save-toast">บันทึกแล้ว! ดูย้อนหลังได้ที่หน้า &lsquo;ของฉัน&rsquo; ✨</p>
+        )}
       </div>
     </div>
   );
