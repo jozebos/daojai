@@ -315,6 +315,8 @@ export default function ThreeCardSpread() {
                         background: `linear-gradient(160deg, ${colors.from}18, ${colors.to}18)`,
                         position: "relative",
                         overflow: "hidden",
+                        padding: 0,
+                        gap: 0,
                       }}
                     >
                       <img
@@ -332,13 +334,19 @@ export default function ThreeCardSpread() {
                           inset: 0,
                         }}
                       />
-                      <div style={{ position: "relative", zIndex: 1 }}>
-                        <div
-                          className="spread-card-element-dot"
-                          style={{
-                            background: `linear-gradient(135deg, ${colors.from}, ${colors.to})`,
-                          }}
-                        />
+                      <div style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        padding: "1.5rem 0.375rem 0.375rem",
+                        background: "linear-gradient(to top, rgba(15,14,46,0.9) 0%, rgba(15,14,46,0.6) 60%, transparent 100%)",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                        zIndex: 1,
+                      }}>
                         <span className="spread-card-name">{item.card.name_th}</span>
                         <span className="spread-card-orientation" data-reversed={isReversed}>
                           {isReversed ? "กลับหัว" : "ตั้งตรง"}

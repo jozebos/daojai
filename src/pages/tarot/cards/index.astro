@@ -49,7 +49,7 @@ const minorBySuit = suits.map((s) => ({
         Major Arcana
         <span class="text-xs text-text-muted font-normal">({MAJOR_ARCANA.length} ใบ)</span>
       </h2>
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
         {MAJOR_ARCANA.map((card) => (
           <a
             href={`/tarot/cards/${card.id}`}
@@ -68,7 +68,6 @@ const minorBySuit = suits.map((s) => ({
                 loading="lazy"
                 style="object-fit: cover; width: 100%; height: 100%; border-radius: inherit; position: absolute; inset: 0;"
               />
-              <span class="encyclopedia-card-number">{card.number}</span>
             </div>
             <span class="encyclopedia-card-name">{card.name_th}</span>
             <span class="encyclopedia-card-name-en">{card.name_en}</span>
@@ -84,7 +83,7 @@ const minorBySuit = suits.map((s) => ({
           {suit.name_th} ({suit.key.charAt(0).toUpperCase() + suit.key.slice(1)})
           <span class="text-xs text-text-muted font-normal">({suit.cards.length} ใบ)</span>
         </h2>
-        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
           {suit.cards.map((card) => (
             <a
               href={`/tarot/cards/${card.id}`}
@@ -103,7 +102,6 @@ const minorBySuit = suits.map((s) => ({
                   loading="lazy"
                   style="object-fit: cover; width: 100%; height: 100%; border-radius: inherit; position: absolute; inset: 0;"
                 />
-                <span class="encyclopedia-card-number">{card.number}</span>
               </div>
               <span class="encyclopedia-card-name">{card.name_th}</span>
               <span class="encyclopedia-card-name-en">{card.name_en}</span>
@@ -122,19 +120,19 @@ const minorBySuit = suits.map((s) => ({
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 0.5rem;
-    border-radius: 0.75rem;
+    padding: 0.625rem;
+    border-radius: 0.875rem;
     background: rgba(30, 27, 75, 0.3);
     border: 1px solid rgba(196, 181, 253, 0.08);
-    transition: all 0.25s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
   }
 
   .encyclopedia-card:hover {
-    background: rgba(30, 27, 75, 0.5);
-    border-color: rgba(196, 181, 253, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(15, 14, 46, 0.4);
+    background: rgba(30, 27, 75, 0.55);
+    border-color: rgba(255, 213, 128, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 213, 128, 0.08);
   }
 
   .encyclopedia-card-image {
@@ -147,19 +145,27 @@ const minorBySuit = suits.map((s) => ({
     margin-bottom: 0.5rem;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
   }
 
-  .encyclopedia-card-number {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: rgba(247, 243, 236, 0.5);
+  .encyclopedia-card:hover .encyclopedia-card-image {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 12px rgba(255, 213, 128, 0.1);
+  }
+
+  .encyclopedia-card-image img {
+    filter: drop-shadow(0 0 8px rgba(255, 213, 128, 0.08));
+    transition: filter 0.3s ease;
+  }
+
+  .encyclopedia-card:hover .encyclopedia-card-image img {
+    filter: drop-shadow(0 0 16px rgba(255, 213, 128, 0.2));
   }
 
   .encyclopedia-card-name {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--color-lavender-100);
     line-height: 1.3;
     margin-bottom: 0.125rem;

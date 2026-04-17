@@ -6,6 +6,44 @@ const TOP_SIGNS = [
   { symbol: "♏", name: "พิจิก", hint: "ความรักสดใส", color: "#C4B5FD" },
   { symbol: "♓", name: "มีน", hint: "การงานก้าวหน้า", color: "#7DD3FC" },
 ];
+
+const R2_BASE = "https://pub-86244ba66c1247a7850218ca7cc8a538.r2.dev/tarot";
+const FAN_CARDS = [
+  { id: "major-00-fool", rotate: -18, ty: 16 },
+  { id: "major-01-magician", rotate: -10, ty: 6 },
+  { id: "major-02-high-priestess", rotate: -3, ty: 0 },
+  { id: "major-17-star", rotate: 0, ty: -4 },
+  { id: "major-06-lovers", rotate: 3, ty: 0 },
+  { id: "major-19-sun", rotate: 10, ty: 6 },
+  { id: "major-21-world", rotate: 18, ty: 16 },
+];
+
+const SPREADS = [
+  {
+    href: "/tarot/daily",
+    title: "ไพ่ประจำวัน",
+    subtitle: "Daily Card",
+    desc: "จับไพ่ 1 ใบ ดูว่าจักรวาลอยากบอกอะไรคุณ",
+    icon: "☀️",
+    accent: "gold",
+  },
+  {
+    href: "/tarot/3-card",
+    title: "ไพ่ 3 ใบ",
+    subtitle: "3-Card Spread",
+    desc: "เปิดอดีต ปัจจุบัน อนาคต ใน 3 ใบ",
+    icon: "🃏",
+    accent: "lavender",
+  },
+  {
+    href: "/horoscope",
+    title: "ดวงรายวัน",
+    subtitle: "Daily Horoscope",
+    desc: "เลือกราศีดูดวงวันนี้ ครบ 12 ราศี",
+    icon: "🔮",
+    accent: "sky",
+  },
+];
 ---
 
 <AppLayout title="เดาใจ — เดาใจเขา เดาใจคุณ | DaoJai">
@@ -19,39 +57,101 @@ const TOP_SIGNS = [
     <div class="noise-home" aria-hidden="true"></div>
 
     <div class="relative z-10">
-      <!-- Hero with radial glow -->
-      <section class="flex flex-col items-center justify-center pt-8 pb-6 sm:pt-12 sm:pb-8 text-center max-w-3xl mx-auto relative">
-        <div class="hero-glow" aria-hidden="true"></div>
 
-        <div class="flex items-center gap-3 mb-3 animate-[fade-in-up_0.6s_ease-out_both] relative z-10">
-          <svg width="40" height="40" viewBox="0 0 80 80" fill="none" class="animate-[float_4s_ease-in-out_infinite] flex-shrink-0" aria-hidden="true">
-            <path
-              d="M40 8l7.05 14.31L62 25.38l-11.43 11.14L53.24 52 40 44.83 26.76 52l2.67-15.48L18 25.38l14.95-3.07L40 8z"
-              fill="#FFD580"
-              opacity="0.9"
-            />
-            <path
-              d="M40 42c-3.87 0-7.42 1.58-9.9 4.1A14.02 14.02 0 0026 56c0 7.73 6.27 14 14 14s14-6.27 14-14c0-3.87-1.58-7.42-4.1-9.9A14.02 14.02 0 0040 42z"
-              fill="#FCA5A5"
-              opacity="0.7"
-            />
-          </svg>
-          <h1 class="hero-title font-display font-bold text-5xl sm:text-6xl text-accent-gold leading-none">
-            เดาใจ
-          </h1>
+      <section class="hero-section flex flex-col items-center justify-center text-center max-w-4xl mx-auto relative">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-glow-secondary" aria-hidden="true"></div>
+
+        <h1 class="hero-title font-display font-bold text-5xl sm:text-6xl md:text-7xl text-accent-gold leading-none animate-[fade-in-up_0.6s_ease-out_both] relative z-10">
+          เดาใจ
+        </h1>
+
+        <p class="text-lg sm:text-xl md:text-2xl text-lavender-300 font-display mt-3 mb-1 animate-[fade-in-up_0.6s_ease-out_0.12s_both] relative z-10">
+          เพื่อนสนิทที่รู้เรื่องดวง
+        </p>
+        <p class="text-xs sm:text-sm text-text-muted tracking-widest uppercase animate-[fade-in-up_0.6s_ease-out_0.2s_both] relative z-10">
+          Read the stars · Hear your heart
+        </p>
+
+        <div class="card-fan-container mt-10 sm:mt-14 mb-8 animate-[fade-in-up_0.8s_ease-out_0.3s_both] relative z-10">
+          <div class="card-fan flex items-end justify-center">
+            {FAN_CARDS.map((c, i) => (
+              <div
+                class="card-fan-item"
+                style={`--fan-rotate: ${c.rotate}deg; --fan-ty: ${c.ty}px; --fan-delay: ${i * 0.08}s; --fan-base-transform: rotate(${c.rotate}deg) translateY(${c.ty}px); transform: rotate(${c.rotate}deg) translateY(${c.ty}px); z-index: ${7 - Math.abs(i - 3)}; animation: fan-float 4s ease-in-out infinite; animation-delay: ${i * 0.3}s; margin-left: ${i > 0 ? '-16px' : '0'};`}
+              >
+                <img
+                  src={`${R2_BASE}/${c.id}.webp`}
+                  alt=""
+                  loading="lazy"
+                  width="110"
+                  height="165"
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
-        <p class="text-lg sm:text-xl text-lavender-300 font-display mb-1 animate-[fade-in-up_0.6s_ease-out_0.15s_both] relative z-10">
-          เดาใจเขา เดาใจคุณ
-        </p>
-        <p class="text-xs sm:text-sm text-text-muted tracking-wide animate-[fade-in-up_0.6s_ease-out_0.25s_both] relative z-10">
-          Read the stars, hear your heart
-        </p>
+        <a
+          href="#spreads"
+          class="cta-button inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-display font-bold text-base sm:text-lg animate-[fade-in-up_0.6s_ease-out_0.45s_both] relative z-10"
+        >
+          เริ่มดูดวงเลย
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+
+        <div class="scroll-indicator mt-10 animate-[fade-in-up_0.6s_ease-out_0.6s_both]" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-text-muted/50">
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+        </div>
       </section>
 
-      <!-- Quick Action Grid with gradient backdrop -->
-      <section class="max-w-2xl mx-auto pb-6 relative">
-        <div class="grid-backdrop" aria-hidden="true"></div>
+      <section id="spreads" class="max-w-3xl mx-auto py-16 sm:py-20 relative">
+        <div class="spread-section-glow" aria-hidden="true"></div>
+
+        <h2 class="font-display font-bold text-xl sm:text-2xl text-lavender-100 text-center mb-3 animate-[fade-in-up_0.6s_ease-out_both]">
+          เลือกแบบดูดวง
+        </h2>
+        <p class="text-text-muted text-sm text-center mb-10 animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
+          เลือกวิธีที่ใช่ แล้วปล่อยให้จักรวาลพูดกับคุณ
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+          {SPREADS.map((s, i) => (
+            <a
+              href={s.href}
+              class={`spread-card spread-card--${s.accent} group`}
+              style={`animation: fade-in-up 0.6s ease-out ${0.15 + i * 0.1}s both;`}
+            >
+              <div class="spread-card-glow" aria-hidden="true"></div>
+              <span class="spread-card-emoji">{s.icon}</span>
+              <h3 class="font-display font-bold text-base sm:text-lg text-lavender-100 group-hover:text-accent-gold transition-colors">
+                {s.title}
+              </h3>
+              <span class="text-[10px] text-text-muted tracking-wide uppercase">{s.subtitle}</span>
+              <p class="text-xs text-text-muted/70 mt-2 leading-relaxed">{s.desc}</p>
+              <span class="spread-card-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section class="max-w-3xl mx-auto pb-10 relative">
+        <div class="grid-section-glow" aria-hidden="true"></div>
+
+        <h2 class="font-display font-bold text-xl sm:text-2xl text-lavender-100 text-center mb-3 animate-[fade-in-up_0.6s_ease-out_both]">
+          สำรวจเพิ่มเติม
+        </h2>
+        <p class="text-text-muted text-sm text-center mb-10 animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
+          คุณสมบัติทั้งหมดของเดาใจ
+        </p>
 
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 relative z-10">
           <a href="/horoscope" class="action-card group" style="animation-delay: 0.05s;" aria-label="ดูดวงรายวัน — เลือกราศีดูดวงวันนี้">
@@ -98,8 +198,7 @@ const TOP_SIGNS = [
         </div>
       </section>
 
-      <!-- Top Zodiac Today -->
-      <section class="max-w-2xl mx-auto pb-8 animate-[fade-in-up_0.6s_ease-out_0.4s_both]">
+      <section class="max-w-3xl mx-auto pb-8 pt-4 animate-[fade-in-up_0.6s_ease-out_0.4s_both]">
         <h3 class="font-display font-bold text-sm text-lavender-300 text-center mb-4 tracking-wide">
           ✨ ดูดวงยอดฮิตวันนี้
         </h3>
@@ -119,21 +218,16 @@ const TOP_SIGNS = [
         </div>
       </section>
 
-      <!-- Footer -->
-      <footer class="max-w-2xl mx-auto pb-6 pt-4 border-t border-lavender-500/10 animate-[fade-in-up_0.6s_ease-out_0.5s_both]">
-        <div class="flex flex-col items-center gap-3 text-center">
+      <footer class="max-w-3xl mx-auto pb-8 pt-8 border-t border-lavender-500/10 animate-[fade-in-up_0.6s_ease-out_0.5s_both]">
+        <div class="flex flex-col items-center gap-4 text-center">
           <p class="text-sm text-lavender-300/70 font-display">
             สร้างด้วย ✨ โดยเดาใจ
           </p>
-          <div class="flex items-center gap-4">
-            <a href="#" class="text-text-muted hover:text-accent-gold transition-colors text-xs">Facebook</a>
-            <span class="text-lavender-500/20">|</span>
-            <a href="#" class="text-text-muted hover:text-accent-gold transition-colors text-xs">Twitter</a>
-            <span class="text-lavender-500/20">|</span>
-            <a href="#" class="text-text-muted hover:text-accent-gold transition-colors text-xs">Instagram</a>
-          </div>
-          <p class="text-[11px] text-text-muted/50">
-            © 2025 เดาใจ DaoJai — เพื่อนสนิทที่รู้เรื่องดวง
+          <p class="text-[11px] text-text-muted/40 leading-relaxed max-w-xs">
+            เว็บดูดวงออนไลน์เพื่อความบันเทิง ผลการดูดวงไม่ได้เป็นคำแนะนำทางการแพทย์หรือการเงิน
+          </p>
+          <p class="text-[11px] text-text-muted/30">
+            © 2026 เดาใจ DaoJai — เพื่อนสนิทที่รู้เรื่องดวง
           </p>
         </div>
       </footer>
@@ -142,36 +236,166 @@ const TOP_SIGNS = [
 </AppLayout>
 
 <style>
+  .hero-section {
+    min-height: 85vh;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .hero-section {
+      min-height: 90vh;
+      padding-top: 6rem;
+    }
+  }
+
   .hero-title {
     text-shadow:
-      0 0 16px rgba(255, 213, 128, 0.4),
-      0 0 48px rgba(255, 213, 128, 0.2);
+      0 0 60px rgba(255, 213, 128, 0.3),
+      0 0 120px rgba(196, 181, 253, 0.15);
     animation: pulse-glow 4s ease-in-out infinite, fade-in-up 0.6s ease-out both;
   }
 
   .hero-glow {
     position: absolute;
-    top: 50%;
+    top: 35%;
     left: 50%;
-    transform: translate(-50%, -55%);
-    width: 320px;
-    height: 320px;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 213, 128, 0.12) 0%, rgba(139, 92, 246, 0.06) 40%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 213, 128, 0.1) 0%, rgba(139, 92, 246, 0.05) 40%, transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .hero-glow-secondary {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(139, 92, 246, 0.06) 0%, transparent 70%);
     filter: blur(40px);
     pointer-events: none;
   }
 
-  .grid-backdrop {
+  .cta-button {
+    background: linear-gradient(135deg, var(--color-accent-gold), var(--color-accent-gold-deep));
+    color: var(--color-surface-midnight);
+    box-shadow: 0 0 30px rgba(255, 213, 128, 0.25), 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(255, 213, 128, 0.4), 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .cta-button:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .card-fan-container {
+    perspective: 800px;
+  }
+
+  .card-fan {
+    transform: rotateX(5deg);
+  }
+
+  .spread-section-glow,
+  .grid-section-glow {
     position: absolute;
-    inset: -20px -10px;
-    border-radius: 2rem;
-    background: linear-gradient(180deg, rgba(30, 27, 75, 0.25) 0%, rgba(15, 14, 46, 0.4) 100%);
-    filter: blur(1px);
+    inset: -40px;
+    border-radius: 3rem;
+    background: radial-gradient(ellipse at 50% 30%, rgba(139, 92, 246, 0.05), transparent 70%);
     pointer-events: none;
   }
 
-  /* ── Action Cards ── */
+  .spread-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 2rem 1.25rem 1.5rem;
+    border-radius: 1.25rem;
+    background: rgba(30, 27, 75, 0.4);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(196, 181, 253, 0.1);
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+  }
+
+  .spread-card:hover {
+    background: rgba(30, 27, 75, 0.6);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  }
+
+  .spread-card--gold:hover {
+    border-color: rgba(255, 213, 128, 0.3);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 213, 128, 0.1);
+  }
+
+  .spread-card--lavender:hover {
+    border-color: rgba(196, 181, 253, 0.3);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 30px rgba(196, 181, 253, 0.08);
+  }
+
+  .spread-card--sky:hover {
+    border-color: rgba(125, 211, 252, 0.3);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 30px rgba(125, 211, 252, 0.08);
+  }
+
+  .spread-card-glow {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 213, 128, 0.08), transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .spread-card:hover .spread-card-glow {
+    opacity: 1;
+  }
+
+  .spread-card-emoji {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    filter: drop-shadow(0 0 8px rgba(255, 213, 128, 0.12));
+  }
+
+  .spread-card-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.75rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 213, 128, 0.08);
+    color: var(--color-accent-gold);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: all 0.3s ease;
+  }
+
+  .spread-card:hover .spread-card-arrow {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   .action-card {
     display: flex;
@@ -196,10 +420,10 @@ const TOP_SIGNS = [
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(
-      160deg,
-      rgba(255, 213, 128, 0.04) 0%,
-      transparent 50%
+    background: radial-gradient(
+      ellipse at 50% 30%,
+      rgba(255, 213, 128, 0.06) 0%,
+      transparent 60%
     );
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -212,11 +436,10 @@ const TOP_SIGNS = [
   .action-card:hover {
     background: rgba(30, 27, 75, 0.65);
     border-color: rgba(255, 213, 128, 0.25);
-    transform: translateY(-3px);
+    transform: translateY(-4px);
     box-shadow:
-      0 8px 32px rgba(15, 14, 46, 0.5),
-      0 0 24px rgba(255, 213, 128, 0.08),
-      0 0 2px rgba(196, 181, 253, 0.15);
+      0 12px 40px rgba(15, 14, 46, 0.5),
+      0 0 24px rgba(255, 213, 128, 0.08);
   }
 
   .action-card:active {
@@ -224,10 +447,10 @@ const TOP_SIGNS = [
   }
 
   .action-icon {
-    font-size: 1.75rem;
+    font-size: 2rem;
     line-height: 1;
-    margin-bottom: 0.625rem;
-    filter: drop-shadow(0 0 6px rgba(255, 213, 128, 0.15));
+    margin-bottom: 0.75rem;
+    filter: drop-shadow(0 0 8px rgba(255, 213, 128, 0.15));
   }
 
   .action-title {
@@ -261,8 +484,6 @@ const TOP_SIGNS = [
     transform: translateX(2px);
   }
 
-  /* ── Top Zodiac Cards ── */
-
   .top-zodiac-card {
     display: flex;
     flex-direction: column;
@@ -295,8 +516,8 @@ const TOP_SIGNS = [
   .top-zodiac-card:hover {
     background: rgba(30, 27, 75, 0.55);
     border-color: rgba(255, 213, 128, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(15, 14, 46, 0.4), 0 0 12px color-mix(in srgb, var(--glow-color) 15%, transparent);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(15, 14, 46, 0.4), 0 0 12px color-mix(in srgb, var(--glow-color) 15%, transparent);
   }
 
   .top-zodiac-rank {
@@ -323,8 +544,6 @@ const TOP_SIGNS = [
     font-size: 0.65rem;
     color: var(--color-text-muted);
   }
-
-  /* ── Subtle Star Field ── */
 
   .star-field-home {
     position: fixed;
@@ -381,14 +600,18 @@ const TOP_SIGNS = [
       padding: 1.5rem 1.25rem;
     }
     .action-icon {
-      font-size: 2rem;
+      font-size: 2.25rem;
     }
     .action-title {
       font-size: 1.05rem;
     }
     .hero-glow {
-      width: 480px;
-      height: 480px;
+      width: 600px;
+      height: 600px;
+    }
+    .hero-glow-secondary {
+      width: 800px;
+      height: 400px;
     }
   }
 </style>

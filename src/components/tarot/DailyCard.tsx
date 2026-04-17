@@ -167,19 +167,16 @@ export default function DailyCard() {
                   background: `linear-gradient(160deg, ${colors.from}22, ${colors.to}22)`,
                   position: "relative",
                   overflow: "hidden",
-                  aspectRatio: "1 / 1",
-                  flex: "none",
                 }}
               >
                 <img
                   src={getCardImageUrl(card.id)}
                   alt={card.name_th}
-                  width={320}
-                  height={320}
+                  width={200}
+                  height={300}
                   loading="eager"
                   style={{
                     objectFit: "cover",
-                    objectPosition: "top",
                     width: "100%",
                     height: "100%",
                     borderRadius: "inherit",
