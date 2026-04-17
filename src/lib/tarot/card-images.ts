@@ -1,4 +1,4 @@
-export const R2_TAROT_BASE = "https://assets.daojai.com/tarot";
+export const R2_TAROT_BASE = "https://pub-86244ba66c1247a7850218ca7cc8a538.r2.dev/tarot";
 
 const CARD_FILENAMES: Record<string, string> = {
   "card-back": "card-back.webp",
