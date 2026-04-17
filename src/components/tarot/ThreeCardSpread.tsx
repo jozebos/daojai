@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { drawThreeCardSpread, getTarotMeaningByOrientation } from "@/lib/tarot/draw";
 import type { ThreeCardSpreadItem, TarotThreeCardPosition } from "@/lib/tarot/draw";
 import { toDateKey } from "@/lib/utils/date";
+import { getCardImageUrl } from "@/lib/tarot/card-images";
 
 function getOrCreateUserId(): string {
   const key = "daojai-user-id";
@@ -259,21 +260,37 @@ export default function ThreeCardSpread() {
                       className="spread-card-front-design"
                       style={{
                         background: `linear-gradient(160deg, ${colors.from}18, ${colors.to}18)`,
+                        position: "relative",
+                        overflow: "hidden",
                       }}
                     >
-                      <div
-                        className="spread-card-element-dot"
+                      <img
+                        src={getCardImageUrl(item.card.id)}
+                        alt={item.card.name_th}
+                        width={160}
+                        height={240}
+                        loading="eager"
                         style={{
-                          background: `linear-gradient(135deg, ${colors.from}, ${colors.to})`,
+                          objectFit: "cover",
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "inherit",
+                          position: "absolute",
+                          inset: 0,
                         }}
                       />
-                      <span className="spread-card-number">
-                        {item.card.arcana === "major" ? romanize(item.card.number) : item.card.number}
-                      </span>
-                      <span className="spread-card-name">{item.card.name_th}</span>
-                      <span className="spread-card-orientation" data-reversed={isReversed}>
-                        {isReversed ? "กลับหัว" : "ตั้งตรง"}
-                      </span>
+                      <div style={{ position: "relative", zIndex: 1 }}>
+                        <div
+                          className="spread-card-element-dot"
+                          style={{
+                            background: `linear-gradient(135deg, ${colors.from}, ${colors.to})`,
+                          }}
+                        />
+                        <span className="spread-card-name">{item.card.name_th}</span>
+                        <span className="spread-card-orientation" data-reversed={isReversed}>
+                          {isReversed ? "กลับหัว" : "ตั้งตรง"}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -352,19 +369,6 @@ export default function ThreeCardSpread() {
       )}
     </div>
   );
-}
-
-function romanize(num: number): string {
-  const map: [number, string][] = [
-    [21, "XXI"], [20, "XX"], [19, "XIX"], [18, "XVIII"], [17, "XVII"],
-    [16, "XVI"], [15, "XV"], [14, "XIV"], [13, "XIII"], [12, "XII"],
-    [11, "XI"], [10, "X"], [9, "IX"], [8, "VIII"], [7, "VII"],
-    [6, "VI"], [5, "V"], [4, "IV"], [3, "III"], [2, "II"], [1, "I"], [0, "0"],
-  ];
-  for (const [val, str] of map) {
-    if (num >= val) return str;
-  }
-  return String(num);
 }
 
 function generateNarrative(spread: readonly ThreeCardSpreadItem[], category: string): string {

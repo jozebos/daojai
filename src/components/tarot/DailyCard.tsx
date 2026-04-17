@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { drawDailyTarotCard, getTarotMeaningByOrientation } from "@/lib/tarot/draw";
 import type { DailyTarotDraw } from "@/lib/tarot/draw";
 import { toDateKey } from "@/lib/utils/date";
+import { getCardImageUrl } from "@/lib/tarot/card-images";
 
 function getOrCreateUserId(): string {
   const key = "daojai-user-id";
@@ -115,9 +116,26 @@ export default function DailyCard() {
                 className="daily-card-image-area"
                 style={{
                   background: `linear-gradient(160deg, ${colors.from}22, ${colors.to}22)`,
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
-                <span className="daily-card-image-roman">
+                <img
+                  src={getCardImageUrl(card.id)}
+                  alt={card.name_th}
+                  width={320}
+                  height={480}
+                  loading="eager"
+                  style={{
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "inherit",
+                    position: "absolute",
+                    inset: 0,
+                  }}
+                />
+                <span className="daily-card-image-roman" style={{ position: "relative", zIndex: 1, opacity: 0 }}>
                   {card.arcana === "major" ? romanize(card.number) : card.number}
                 </span>
               </div>

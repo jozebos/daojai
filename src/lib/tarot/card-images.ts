@@ -1,177 +1,98 @@
-import cardBack from "@/assets/tarot/card-back.png";
-import major00 from "@/assets/tarot/major-00-fool.png";
-import major01 from "@/assets/tarot/major-01-magician.png";
-import major02 from "@/assets/tarot/major-02-high-priestess.png";
-import major03 from "@/assets/tarot/major-03-empress.png";
-import major04 from "@/assets/tarot/major-04-emperor.png";
-import major05 from "@/assets/tarot/major-05-hierophant.png";
-import major06 from "@/assets/tarot/major-06-lovers.png";
-import major07 from "@/assets/tarot/major-07-chariot.png";
-import major08 from "@/assets/tarot/major-08-strength.png";
-import major09 from "@/assets/tarot/major-09-hermit.png";
-import major10 from "@/assets/tarot/major-10-wheel-of-fortune.png";
-import major11 from "@/assets/tarot/major-11-justice.png";
-import major12 from "@/assets/tarot/major-12-hanged-man.png";
-import major13 from "@/assets/tarot/major-13-death.png";
-import major14 from "@/assets/tarot/major-14-temperance.png";
-import major15 from "@/assets/tarot/major-15-devil.png";
-import major16 from "@/assets/tarot/major-16-tower.png";
-import major17 from "@/assets/tarot/major-17-star.png";
-import major18 from "@/assets/tarot/major-18-moon.png";
-import major19 from "@/assets/tarot/major-19-sun.png";
-import major20 from "@/assets/tarot/major-20-judgement.png";
-import major21 from "@/assets/tarot/major-21-world.png";
-import wands01 from "@/assets/tarot/wands-01-ace.png";
-import wands02 from "@/assets/tarot/wands-02-two.png";
-import wands03 from "@/assets/tarot/wands-03-three.png";
-import wands04 from "@/assets/tarot/wands-04-four.png";
-import wands05 from "@/assets/tarot/wands-05-five.png";
-import wands06 from "@/assets/tarot/wands-06-six.png";
-import wands07 from "@/assets/tarot/wands-07-seven.png";
-import wands08 from "@/assets/tarot/wands-08-eight.png";
-import wands09 from "@/assets/tarot/wands-09-nine.png";
-import wands10 from "@/assets/tarot/wands-10-ten.png";
-import wands11 from "@/assets/tarot/wands-11-page.png";
-import wands12 from "@/assets/tarot/wands-12-knight.png";
-import wands13 from "@/assets/tarot/wands-13-queen.png";
-import wands14 from "@/assets/tarot/wands-14-king.png";
-import cups01 from "@/assets/tarot/cups-01-ace.svg";
-import cups02 from "@/assets/tarot/cups-02-two.png";
-import cups03 from "@/assets/tarot/cups-03-three.png";
-import cups04 from "@/assets/tarot/cups-04-four.png";
-import cups05 from "@/assets/tarot/cups-05-five.png";
-import cups06 from "@/assets/tarot/cups-06-six.png";
-import cups07 from "@/assets/tarot/cups-07-seven.png";
-import cups08 from "@/assets/tarot/cups-08-eight.png";
-import cups09 from "@/assets/tarot/cups-09-nine.png";
-import cups10 from "@/assets/tarot/cups-10-ten.png";
-import cups11 from "@/assets/tarot/cups-11-page.png";
-import cups12 from "@/assets/tarot/cups-12-knight.png";
-import cups13 from "@/assets/tarot/cups-13-queen.png";
-import cups14 from "@/assets/tarot/cups-14-king.png";
-import swords01 from "@/assets/tarot/swords-01-ace.png";
-import swords02 from "@/assets/tarot/swords-02-two.png";
-import swords03 from "@/assets/tarot/swords-03-three.png";
-import swords04 from "@/assets/tarot/swords-04-four.png";
-import swords05 from "@/assets/tarot/swords-05-five.png";
-import swords06 from "@/assets/tarot/swords-06-six.png";
-import swords07 from "@/assets/tarot/swords-07-seven.png";
-import swords08 from "@/assets/tarot/swords-08-eight.png";
-import swords09 from "@/assets/tarot/swords-09-nine.png";
-import swords10 from "@/assets/tarot/swords-10-ten.png";
-import swords11 from "@/assets/tarot/swords-11-page.png";
-import swords12 from "@/assets/tarot/swords-12-knight.png";
-import swords13 from "@/assets/tarot/swords-13-queen.png";
-import swords14 from "@/assets/tarot/swords-14-king.png";
-import pentacles01 from "@/assets/tarot/pentacles-01-ace.png";
-import pentacles02 from "@/assets/tarot/pentacles-02-two.png";
-import pentacles03 from "@/assets/tarot/pentacles-03-three.png";
-import pentacles04 from "@/assets/tarot/pentacles-04-four.png";
-import pentacles05 from "@/assets/tarot/pentacles-05-five.png";
-import pentacles06 from "@/assets/tarot/pentacles-06-six.png";
-import pentacles07 from "@/assets/tarot/pentacles-07-seven.png";
-import pentacles08 from "@/assets/tarot/pentacles-08-eight.png";
-import pentacles09 from "@/assets/tarot/pentacles-09-nine.png";
-import pentacles10 from "@/assets/tarot/pentacles-10-ten.png";
-import pentacles11 from "@/assets/tarot/pentacles-11-page.png";
-import pentacles12 from "@/assets/tarot/pentacles-12-knight.png";
-import pentacles13 from "@/assets/tarot/pentacles-13-queen.png";
-import pentacles14 from "@/assets/tarot/pentacles-14-king.png";
+export const R2_TAROT_BASE = "https://pub-86244ba66c1247a7850218ca7cc8a538.r2.dev/tarot";
 
-export type CardImageId =
-  | "card-back"
-  | `major-${string}`
-  | `wands-${string}`
-  | `cups-${string}`
-  | `swords-${string}`
-  | `pentacles-${string}`;
-
-export const CARD_IMAGES: Record<string, ImageMetadata | string> = {
-  "card-back": cardBack,
-  "major-00": major00,
-  "major-01": major01,
-  "major-02": major02,
-  "major-03": major03,
-  "major-04": major04,
-  "major-05": major05,
-  "major-06": major06,
-  "major-07": major07,
-  "major-08": major08,
-  "major-09": major09,
-  "major-10": major10,
-  "major-11": major11,
-  "major-12": major12,
-  "major-13": major13,
-  "major-14": major14,
-  "major-15": major15,
-  "major-16": major16,
-  "major-17": major17,
-  "major-18": major18,
-  "major-19": major19,
-  "major-20": major20,
-  "major-21": major21,
-  "wands-01": wands01,
-  "wands-02": wands02,
-  "wands-03": wands03,
-  "wands-04": wands04,
-  "wands-05": wands05,
-  "wands-06": wands06,
-  "wands-07": wands07,
-  "wands-08": wands08,
-  "wands-09": wands09,
-  "wands-10": wands10,
-  "wands-11": wands11,
-  "wands-12": wands12,
-  "wands-13": wands13,
-  "wands-14": wands14,
-  "cups-01": cups01,
-  "cups-02": cups02,
-  "cups-03": cups03,
-  "cups-04": cups04,
-  "cups-05": cups05,
-  "cups-06": cups06,
-  "cups-07": cups07,
-  "cups-08": cups08,
-  "cups-09": cups09,
-  "cups-10": cups10,
-  "cups-11": cups11,
-  "cups-12": cups12,
-  "cups-13": cups13,
-  "cups-14": cups14,
-  "swords-01": swords01,
-  "swords-02": swords02,
-  "swords-03": swords03,
-  "swords-04": swords04,
-  "swords-05": swords05,
-  "swords-06": swords06,
-  "swords-07": swords07,
-  "swords-08": swords08,
-  "swords-09": swords09,
-  "swords-10": swords10,
-  "swords-11": swords11,
-  "swords-12": swords12,
-  "swords-13": swords13,
-  "swords-14": swords14,
-  "pentacles-01": pentacles01,
-  "pentacles-02": pentacles02,
-  "pentacles-03": pentacles03,
-  "pentacles-04": pentacles04,
-  "pentacles-05": pentacles05,
-  "pentacles-06": pentacles06,
-  "pentacles-07": pentacles07,
-  "pentacles-08": pentacles08,
-  "pentacles-09": pentacles09,
-  "pentacles-10": pentacles10,
-  "pentacles-11": pentacles11,
-  "pentacles-12": pentacles12,
-  "pentacles-13": pentacles13,
-  "pentacles-14": pentacles14,
+const CARD_FILENAMES: Record<string, string> = {
+  "card-back": "card-back.png",
+  // Major Arcana
+  "major-00": "major-00-fool.png",
+  "major-01": "major-01-magician.png",
+  "major-02": "major-02-high-priestess.png",
+  "major-03": "major-03-empress.png",
+  "major-04": "major-04-emperor.png",
+  "major-05": "major-05-hierophant.png",
+  "major-06": "major-06-lovers.png",
+  "major-07": "major-07-chariot.png",
+  "major-08": "major-08-strength.png",
+  "major-09": "major-09-hermit.png",
+  "major-10": "major-10-wheel-of-fortune.png",
+  "major-11": "major-11-justice.png",
+  "major-12": "major-12-hanged-man.png",
+  "major-13": "major-13-death.png",
+  "major-14": "major-14-temperance.png",
+  "major-15": "major-15-devil.png",
+  "major-16": "major-16-tower.png",
+  "major-17": "major-17-star.png",
+  "major-18": "major-18-moon.png",
+  "major-19": "major-19-sun.png",
+  "major-20": "major-20-judgement.png",
+  "major-21": "major-21-world.png",
+  // Wands
+  "wands-01": "wands-01-ace.png",
+  "wands-02": "wands-02-two.png",
+  "wands-03": "wands-03-three.png",
+  "wands-04": "wands-04-four.png",
+  "wands-05": "wands-05-five.png",
+  "wands-06": "wands-06-six.png",
+  "wands-07": "wands-07-seven.png",
+  "wands-08": "wands-08-eight.png",
+  "wands-09": "wands-09-nine.png",
+  "wands-10": "wands-10-ten.png",
+  "wands-11": "wands-11-page.png",
+  "wands-12": "wands-12-knight.png",
+  "wands-13": "wands-13-queen.png",
+  "wands-14": "wands-14-king.png",
+  // Cups
+  "cups-01": "cups-01-ace.svg",
+  "cups-02": "cups-02-two.png",
+  "cups-03": "cups-03-three.png",
+  "cups-04": "cups-04-four.png",
+  "cups-05": "cups-05-five.png",
+  "cups-06": "cups-06-six.png",
+  "cups-07": "cups-07-seven.png",
+  "cups-08": "cups-08-eight.png",
+  "cups-09": "cups-09-nine.png",
+  "cups-10": "cups-10-ten.png",
+  "cups-11": "cups-11-page.png",
+  "cups-12": "cups-12-knight.png",
+  "cups-13": "cups-13-queen.png",
+  "cups-14": "cups-14-king.png",
+  // Swords
+  "swords-01": "swords-01-ace.png",
+  "swords-02": "swords-02-two.png",
+  "swords-03": "swords-03-three.png",
+  "swords-04": "swords-04-four.png",
+  "swords-05": "swords-05-five.png",
+  "swords-06": "swords-06-six.png",
+  "swords-07": "swords-07-seven.png",
+  "swords-08": "swords-08-eight.png",
+  "swords-09": "swords-09-nine.png",
+  "swords-10": "swords-10-ten.png",
+  "swords-11": "swords-11-page.png",
+  "swords-12": "swords-12-knight.png",
+  "swords-13": "swords-13-queen.png",
+  "swords-14": "swords-14-king.png",
+  // Pentacles
+  "pentacles-01": "pentacles-01-ace.png",
+  "pentacles-02": "pentacles-02-two.png",
+  "pentacles-03": "pentacles-03-three.png",
+  "pentacles-04": "pentacles-04-four.png",
+  "pentacles-05": "pentacles-05-five.png",
+  "pentacles-06": "pentacles-06-six.png",
+  "pentacles-07": "pentacles-07-seven.png",
+  "pentacles-08": "pentacles-08-eight.png",
+  "pentacles-09": "pentacles-09-nine.png",
+  "pentacles-10": "pentacles-10-ten.png",
+  "pentacles-11": "pentacles-11-page.png",
+  "pentacles-12": "pentacles-12-knight.png",
+  "pentacles-13": "pentacles-13-queen.png",
+  "pentacles-14": "pentacles-14-king.png",
 };
 
-export function getCardImage(cardId: string): ImageMetadata | string | undefined {
-  return CARD_IMAGES[cardId];
+export function getCardImageUrl(cardId: string): string {
+  const filename = CARD_FILENAMES[cardId];
+  if (!filename) return "";
+  return `${R2_TAROT_BASE}/${filename}`;
 }
 
-export function getCardBackImage(): ImageMetadata | string {
-  return CARD_IMAGES["card-back"];
+export function getCardBackUrl(): string {
+  return `${R2_TAROT_BASE}/card-back.png`;
 }
