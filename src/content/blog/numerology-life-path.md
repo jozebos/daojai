@@ -4,7 +4,7 @@ description: "เรียนรู้เลขศาสตร์เบื้อ
 date: 2026-04-10
 author: "เดาใจ"
 tags: ["เลขศาสตร์", "เลขชีวิต", "ตัวเลข", "การดูดวง"]
-image: "/blog/numerology-guide.jpg"
+image: "/blog/numerology-life-path-cover.webp"
 ---
 
 ## เลขศาสตร์คืออะไร?

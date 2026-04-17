@@ -1,246 +1,256 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import ThemeToggle from "@/components/ThemeToggle.tsx";
+import AppLayout from "@/layouts/AppLayout.astro";
 ---
 
-<BaseLayout title="เดาใจ — เดาใจเขา เดาใจคุณ | DaoJai">
-  <div class="relative min-h-screen overflow-hidden bg-surface-midnight">
+<AppLayout title="เดาใจ — เดาใจเขา เดาใจคุณ | DaoJai">
+  <div class="relative overflow-hidden">
 
-    <div class="star-field" aria-hidden="true">
-      <div class="stars-sm"></div>
-      <div class="stars-md"></div>
-      <div class="stars-lg"></div>
+    <div class="star-field-home" aria-hidden="true">
+      <div class="stars-home-sm"></div>
+      <div class="stars-home-md"></div>
     </div>
 
-    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="noise-home" aria-hidden="true"></div>
 
     <div class="relative z-10">
-
-      <header class="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto">
-        <a href="/" class="font-display font-bold text-lg text-accent-gold" aria-label="เดาใจ — หน้าแรก">
-          เดาใจ
-        </a>
-        <div class="flex items-center gap-4">
-          <nav class="hidden md:flex items-center gap-1" aria-label="เมนู">
-            <a href="/horoscope" class="px-4 py-2 text-sm text-text-muted hover:text-accent-gold rounded-lg transition-colors">ดูดวง</a>
-            <a href="/tarot" class="px-4 py-2 text-sm text-text-muted hover:text-accent-gold rounded-lg transition-colors">ไพ่ทาโรต์</a>
-            <a href="/compatibility" class="px-4 py-2 text-sm text-text-muted hover:text-accent-gold rounded-lg transition-colors">เช็คดวงคู่</a>
-          </nav>
-          <ThemeToggle client:load />
-        </div>
-      </header>
-
-      <main class="px-4">
-
-        <section class="flex flex-col items-center justify-center min-h-[85vh] text-center max-w-3xl mx-auto animate-[fade-in-up_0.8s_ease-out_both]">
-          <div class="mascot-placeholder mb-8 animate-[float_4s_ease-in-out_infinite]" aria-hidden="true">
-            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-              <path
-                d="M40 8l7.05 14.31L62 25.38l-11.43 11.14L53.24 52 40 44.83 26.76 52l2.67-15.48L18 25.38l14.95-3.07L40 8z"
-                fill="#FFD580"
-                opacity="0.9"
-              />
-              <path
-                d="M40 42c-3.87 0-7.42 1.58-9.9 4.1A14.02 14.02 0 0026 56c0 7.73 6.27 14 14 14s14-6.27 14-14c0-3.87-1.58-7.42-4.1-9.9A14.02 14.02 0 0040 42z"
-                fill="#FCA5A5"
-                opacity="0.7"
-              />
-            </svg>
-          </div>
-
-          <h1 class="hero-title font-display font-bold text-6xl sm:text-7xl md:text-8xl text-accent-gold mb-4 leading-tight">
+      <!-- Compact Hero -->
+      <section class="flex flex-col items-center justify-center pt-8 pb-6 sm:pt-12 sm:pb-8 text-center max-w-3xl mx-auto">
+        <div class="flex items-center gap-3 mb-3 animate-[fade-in-up_0.6s_ease-out_both]">
+          <svg width="40" height="40" viewBox="0 0 80 80" fill="none" class="animate-[float_4s_ease-in-out_infinite] flex-shrink-0" aria-hidden="true">
+            <path
+              d="M40 8l7.05 14.31L62 25.38l-11.43 11.14L53.24 52 40 44.83 26.76 52l2.67-15.48L18 25.38l14.95-3.07L40 8z"
+              fill="#FFD580"
+              opacity="0.9"
+            />
+            <path
+              d="M40 42c-3.87 0-7.42 1.58-9.9 4.1A14.02 14.02 0 0026 56c0 7.73 6.27 14 14 14s14-6.27 14-14c0-3.87-1.58-7.42-4.1-9.9A14.02 14.02 0 0040 42z"
+              fill="#FCA5A5"
+              opacity="0.7"
+            />
+          </svg>
+          <h1 class="hero-title font-display font-bold text-5xl sm:text-6xl text-accent-gold leading-none">
             เดาใจ
           </h1>
+        </div>
 
-          <p class="text-xl sm:text-2xl text-lavender-300 font-display mb-2 animate-[fade-in-up_0.8s_ease-out_0.2s_both]">
-            เดาใจเขา เดาใจคุณ
-          </p>
+        <p class="text-lg sm:text-xl text-lavender-300 font-display mb-1 animate-[fade-in-up_0.6s_ease-out_0.15s_both]">
+          เดาใจเขา เดาใจคุณ
+        </p>
+        <p class="text-xs sm:text-sm text-text-muted tracking-wide animate-[fade-in-up_0.6s_ease-out_0.25s_both]">
+          Read the stars, hear your heart
+        </p>
+      </section>
 
-          <p class="text-sm sm:text-base text-text-muted mb-10 tracking-wide animate-[fade-in-up_0.8s_ease-out_0.4s_both]">
-            Read the stars, hear your heart
-          </p>
-
-          <a
-            href="/horoscope"
-            class="group inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-accent-gold to-accent-gold-deep text-surface-midnight font-semibold text-base shadow-[0_0_24px_rgba(255,213,128,0.3)] hover:shadow-[0_0_40px_rgba(255,213,128,0.5)] hover:scale-105 transition-all duration-300 animate-[fade-in-up_0.8s_ease-out_0.6s_both]"
-            aria-label="ลองเลย — เริ่มดูดวง"
-          >
-            ลองเลย
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
+      <!-- Quick Action Grid -->
+      <section class="max-w-2xl mx-auto pb-8">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+          <a href="/horoscope" class="action-card group" style="animation-delay: 0.05s;" aria-label="ดูดวงรายวัน — เลือกราศีดูดวงวันนี้">
+            <span class="action-icon" aria-hidden="true">🔮</span>
+            <h2 class="action-title">ดูดวงรายวัน</h2>
+            <p class="action-desc">เลือกราศีดูดวงวันนี้</p>
+            <svg class="action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
-        </section>
 
-        <section class="max-w-4xl mx-auto pb-24 md:pb-16">
-          <h2 class="text-center font-display font-bold text-2xl sm:text-3xl text-lavender-100 mb-12 animate-[fade-in-up_0.8s_ease-out_both]">
-            ฟ้าบอก Jai ว่า...
-          </h2>
+          <a href="/tarot/daily" class="action-card group" style="animation-delay: 0.1s;" aria-label="จับไพ่ทาโรต์ — เปิดไพ่ 1 ใบประจำวัน">
+            <span class="action-icon" aria-hidden="true">🃏</span>
+            <h2 class="action-title">จับไพ่ทาโรต์</h2>
+            <p class="action-desc">เปิดไพ่ 1 ใบประจำวัน</p>
+            <svg class="action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
 
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <a href="/horoscope" class="feature-card group" style="animation-delay: 0.1s;" aria-label="ดวงรายวัน — ดูดวงประจำวันตามราศี">
-              <div class="feature-icon text-accent-gold group-hover:scale-110 transition-transform">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-              </div>
-              <h3 class="font-display font-bold text-sm sm:text-base text-lavender-100 mb-1">ดวงรายวัน</h3>
-              <p class="text-xs text-text-muted leading-relaxed">ดูดวงประจำวัน ตามราศีของคุณ</p>
-            </a>
+          <a href="/compatibility" class="action-card group" style="animation-delay: 0.15s;" aria-label="เช็คดวงคู่ — ดูความเข้ากันของคุณกับเขา">
+            <span class="action-icon" aria-hidden="true">💕</span>
+            <h2 class="action-title">เช็คดวงคู่</h2>
+            <p class="action-desc">ดูความเข้ากันของคุณกับเขา</p>
+            <svg class="action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
 
-            <a href="/tarot" class="feature-card group" style="animation-delay: 0.2s;" aria-label="ไพ่ทาโรต์ — เปิดไพ่ทำนายเรื่องราวชีวิต">
-              <div class="feature-icon text-lavender-300 group-hover:scale-110 transition-transform">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="2" y="3" width="14" height="18" rx="2" />
-                  <path d="M18 7h2a2 2 0 012 2v10a2 2 0 01-2 2h-2" />
-                  <path d="M9 8l-2 4h4l-2 4" />
-                </svg>
-              </div>
-              <h3 class="font-display font-bold text-sm sm:text-base text-lavender-100 mb-1">ไพ่ทาโรต์</h3>
-              <p class="text-xs text-text-muted leading-relaxed">เปิดไพ่ทำนาย เรื่องราวชีวิต</p>
-            </a>
+          <a href="/birth-chart" class="action-card group" style="animation-delay: 0.2s;" aria-label="ดูดวงวันเกิด — ราศี ทักษา เลขชีวิต">
+            <span class="action-icon" aria-hidden="true">⭐</span>
+            <h2 class="action-title">ดูดวงวันเกิด</h2>
+            <p class="action-desc">ราศี ทักษา เลขชีวิต</p>
+            <svg class="action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
 
-            <a href="/compatibility" class="feature-card group" style="animation-delay: 0.3s;" aria-label="เช็คดวงคู่ — เช็คความเข้ากันของคู่รัก">
-              <div class="feature-icon text-pink-soft group-hover:scale-110 transition-transform">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z" />
-                </svg>
-              </div>
-              <h3 class="font-display font-bold text-sm sm:text-base text-lavender-100 mb-1">เช็คดวงคู่</h3>
-              <p class="text-xs text-text-muted leading-relaxed">เช็คความเข้ากัน คู่รัก เพื่อน</p>
-            </a>
+          <a href="/tarot/3-card" class="action-card group" style="animation-delay: 0.25s;" aria-label="ไพ่ 3 ใบ — อดีต ปัจจุบัน อนาคต">
+            <span class="action-icon" aria-hidden="true">🃏</span>
+            <h2 class="action-title">ไพ่ 3 ใบ</h2>
+            <p class="action-desc">อดีต ปัจจุบัน อนาคต</p>
+            <svg class="action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
 
-            <a href="/birth-chart" class="feature-card group" style="animation-delay: 0.4s;" aria-label="ดวงวันเกิด — แผนที่ดาวส่วนตัวของคุณ">
-              <div class="feature-icon text-sky group-hover:scale-110 transition-transform">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
-                  <line x1="2" y1="12" x2="22" y2="12" />
-                </svg>
-              </div>
-              <h3 class="font-display font-bold text-sm sm:text-base text-lavender-100 mb-1">ดวงวันเกิด</h3>
-              <p class="text-xs text-text-muted leading-relaxed">แผนที่ดาว ส่วนตัวของคุณ</p>
-            </a>
-          </div>
-        </section>
-
-      </main>
+          <a href="/tarot/cards" class="action-card group" style="animation-delay: 0.3s;" aria-label="สารานุกรมไพ่ — ค้นหาความหมายไพ่ 78 ใบ">
+            <span class="action-icon" aria-hidden="true">📚</span>
+            <h2 class="action-title">สารานุกรมไพ่</h2>
+            <p class="action-desc">ค้นหาความหมายไพ่ 78 ใบ</p>
+            <svg class="action-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </section>
     </div>
   </div>
-</BaseLayout>
+</AppLayout>
 
 <style>
   .hero-title {
     text-shadow:
-      0 0 20px rgba(255, 213, 128, 0.5),
-      0 0 60px rgba(255, 213, 128, 0.3),
-      0 0 120px rgba(255, 213, 128, 0.15);
-    animation: pulse-glow 4s ease-in-out infinite, fade-in-up 0.8s ease-out both;
+      0 0 16px rgba(255, 213, 128, 0.4),
+      0 0 48px rgba(255, 213, 128, 0.2);
+    animation: pulse-glow 4s ease-in-out infinite, fade-in-up 0.6s ease-out both;
   }
 
-  .feature-card {
+  /* ── Action Cards ── */
+
+  .action-card {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1.5rem 1rem;
+    align-items: flex-start;
+    position: relative;
+    min-height: 130px;
+    padding: 1.25rem 1rem;
     border-radius: 1rem;
-    background: rgba(30, 27, 75, 0.4);
-    backdrop-filter: blur(12px);
+    background: rgba(30, 27, 75, 0.45);
+    backdrop-filter: blur(16px);
     border: 1px solid rgba(196, 181, 253, 0.12);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fade-in-up 0.6s ease-out both;
+    text-decoration: none;
+    overflow: hidden;
+  }
+
+  .action-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      160deg,
+      rgba(255, 213, 128, 0.04) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .action-card:hover::before {
+    opacity: 1;
+  }
+
+  .action-card:hover {
+    background: rgba(30, 27, 75, 0.65);
+    border-color: rgba(255, 213, 128, 0.25);
+    transform: translateY(-3px);
+    box-shadow:
+      0 8px 32px rgba(15, 14, 46, 0.5),
+      0 0 20px rgba(255, 213, 128, 0.06);
+  }
+
+  .action-card:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+
+  .action-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    margin-bottom: 0.625rem;
+    filter: drop-shadow(0 0 6px rgba(255, 213, 128, 0.15));
+  }
+
+  .action-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-lavender-100);
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+  }
+
+  .action-desc {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .action-arrow {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--color-text-muted);
+    opacity: 0.3;
     transition: all 0.3s ease;
-    animation: fade-in-up 0.8s ease-out both;
   }
 
-  .feature-card:hover {
-    background: rgba(30, 27, 75, 0.6);
-    border-color: rgba(196, 181, 253, 0.25);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 32px rgba(15, 14, 46, 0.4);
+  .action-card:hover .action-arrow {
+    opacity: 0.7;
+    color: var(--color-accent-gold);
+    transform: translateX(2px);
   }
 
-  .feature-icon {
-    margin-bottom: 0.75rem;
-    transition: transform 0.3s ease;
-  }
+  /* ── Subtle Star Field ── */
 
-  /* ── Star field layers ── */
-
-  .star-field {
+  .star-field-home {
     position: fixed;
     inset: 0;
     pointer-events: none;
+    opacity: 0.5;
   }
 
-  .stars-sm, .stars-md, .stars-lg {
+  .stars-home-sm, .stars-home-md {
     position: absolute;
     inset: 0;
-    border-radius: 50%;
   }
 
-  .stars-sm::after, .stars-md::after, .stars-lg::after {
+  .stars-home-sm::after, .stars-home-md::after {
     content: '';
     position: absolute;
-    width: 1px;
-    height: 1px;
     border-radius: 50%;
     background: white;
   }
 
-  .stars-sm::after {
+  .stars-home-sm::after {
+    width: 1px;
+    height: 1px;
     box-shadow:
       25px 50px white, 80px 120px white, 150px 30px white, 200px 180px white,
       320px 80px white, 400px 150px white, 50px 250px white, 180px 300px white,
       350px 220px white, 500px 100px white, 600px 200px white, 700px 50px white,
       120px 400px white, 450px 350px white, 550px 280px white, 680px 380px white,
-      230px 500px white, 380px 450px white, 90px 550px white, 520px 520px white,
-      750px 300px white, 100px 650px white, 300px 600px white, 650px 480px white,
-      800px 150px white, 850px 350px white, 900px 200px white, 950px 450px white,
-      180px 700px white, 420px 680px white, 580px 620px white, 720px 580px white,
-      40px 800px white, 280px 780px white, 490px 750px white, 830px 550px white;
+      230px 500px white, 380px 450px white, 90px 550px white, 520px 520px white;
     animation: twinkle 3s ease-in-out infinite;
   }
 
-  .stars-md::after {
+  .stars-home-md::after {
     width: 2px;
     height: 2px;
     box-shadow:
       60px 80px white, 200px 50px white, 350px 180px white, 500px 250px white,
       100px 350px white, 450px 120px white, 650px 320px white, 300px 480px white,
-      550px 400px white, 750px 180px white, 180px 580px white, 420px 550px white,
-      700px 450px white, 850px 280px white, 80px 700px white, 600px 650px white,
-      380px 720px white, 900px 380px white;
+      550px 400px white, 750px 180px white;
     animation: twinkle-slow 5s ease-in-out infinite;
     animation-delay: 1s;
   }
 
-  .stars-lg::after {
-    width: 3px;
-    height: 3px;
-    box-shadow:
-      150px 100px rgba(255, 213, 128, 0.8), 400px 300px rgba(196, 181, 253, 0.6),
-      700px 150px rgba(255, 213, 128, 0.7), 250px 500px rgba(196, 181, 253, 0.5),
-      550px 550px rgba(255, 213, 128, 0.6), 850px 400px rgba(196, 181, 253, 0.7),
-      100px 750px rgba(255, 213, 128, 0.5), 650px 700px rgba(196, 181, 253, 0.6);
-    animation: twinkle 7s ease-in-out infinite;
-    animation-delay: 2s;
-  }
-
-  .noise-overlay {
+  .noise-home {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: 0.035;
+    opacity: 0.025;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 256px 256px;
+  }
+
+  @media (min-width: 640px) {
+    .action-card {
+      min-height: 140px;
+      padding: 1.5rem 1.25rem;
+    }
+    .action-icon {
+      font-size: 2rem;
+    }
+    .action-title {
+      font-size: 1.05rem;
+    }
   }
 </style>

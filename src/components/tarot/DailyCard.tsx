@@ -118,16 +118,19 @@ export default function DailyCard() {
                   background: `linear-gradient(160deg, ${colors.from}22, ${colors.to}22)`,
                   position: "relative",
                   overflow: "hidden",
+                  aspectRatio: "1 / 1",
+                  flex: "none",
                 }}
               >
                 <img
                   src={getCardImageUrl(card.id)}
                   alt={card.name_th}
                   width={320}
-                  height={480}
+                  height={320}
                   loading="eager"
                   style={{
                     objectFit: "cover",
+                    objectPosition: "top",
                     width: "100%",
                     height: "100%",
                     borderRadius: "inherit",
@@ -135,12 +138,9 @@ export default function DailyCard() {
                     inset: 0,
                   }}
                 />
-                <span className="daily-card-image-roman" style={{ position: "relative", zIndex: 1, opacity: 0 }}>
-                  {card.arcana === "major" ? romanize(card.number) : card.number}
-                </span>
               </div>
 
-              <div className="daily-card-info">
+              <div className="daily-card-info" style={{ background: "linear-gradient(to bottom, rgba(15,14,46,0.9), rgba(30,27,75,0.95))" }}>
                 <h2 className="daily-card-name">{card.name_th}</h2>
                 <p className="daily-card-name-en">{card.name_en}</p>
                 <div className="daily-card-orientation-badge" data-reversed={isReversed}>

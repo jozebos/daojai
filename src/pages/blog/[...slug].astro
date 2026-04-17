@@ -57,6 +57,17 @@ const readingTime = 4; // ~800 words / 200 wpm
         ))}
       </div>
 
+      {/* Cover image */}
+      {post.data.image && (
+        <div class="rounded-2xl overflow-hidden mb-6 border border-lavender-300/10">
+          <img
+            src={post.data.image}
+            alt={post.data.title}
+            class="w-full aspect-[16/9] object-cover"
+          />
+        </div>
+      )}
+
       {/* Title */}
       <h1 class="font-display text-2xl md:text-4xl font-bold text-text-primary dark:text-text-on-dark leading-tight mb-4">
         {post.data.title}

@@ -34,8 +34,19 @@ function formatDate(date: Date): string {
           href={`/blog/${post.id}`}
           class="group block rounded-2xl bg-white/5 dark:bg-surface-indigo/40 border border-lavender-300/10 hover:border-accent-gold/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-glow-gold overflow-hidden"
         >
-          {/* Color strip */}
-          <div class="h-1.5 bg-gradient-to-r from-accent-gold to-lavender-500" />
+          {/* Cover image or color strip */}
+          {post.data.image ? (
+            <div class="aspect-[16/9] overflow-hidden">
+              <img
+                src={post.data.image}
+                alt={post.data.title}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+            </div>
+          ) : (
+            <div class="h-1.5 bg-gradient-to-r from-accent-gold to-lavender-500" />
+          )}
 
           <div class="p-5 md:p-6">
             {/* Tags */}

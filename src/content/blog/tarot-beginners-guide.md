@@ -4,7 +4,7 @@ description: "เรียนรู้พื้นฐานไพ่ทาโร
 date: 2026-04-15
 author: "เดาใจ"
 tags: ["ทาโรต์", "มือใหม่", "ไพ่ทาโรต์", "การดูดวง"]
-image: "/blog/tarot-guide.jpg"
+image: "/blog/tarot-beginners-guide-cover.webp"
 ---
 
 ## ไพ่ทาโรต์คืออะไร?

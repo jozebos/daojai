@@ -209,6 +209,7 @@ export default function BirthProfile() {
                 required
                 max={new Date().toISOString().split("T")[0]}
                 className="w-full px-4 py-3 rounded-xl bg-surface-indigo/60 border border-lavender-500/20 text-text-on-dark focus:outline-none focus:border-accent-gold/50 focus:ring-1 focus:ring-accent-gold/30 transition-all"
+                style={{ colorScheme: "dark" }}
               />
             </div>
 

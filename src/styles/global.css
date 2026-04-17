@@ -182,12 +182,19 @@ html {
 }
 
 .daily-card-image-area {
-  flex: 1;
+  flex: none;
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0.75rem;
   border-radius: 0.5rem;
+}
+
+/* Astro island hydration placeholder */
+astro-island:not([ssr]) {
+  min-height: 300px;
+  display: block;
 }
 
 .daily-card-image-roman {
@@ -198,8 +205,11 @@ html {
 }
 
 .daily-card-info {
-  padding: 0 0.75rem 0.75rem;
+  padding: 0.5rem 0.75rem 0.75rem;
   text-align: center;
+  position: relative;
+  z-index: 1;
+  border-radius: 0 0 1rem 1rem;
 }
 
 .daily-card-name {

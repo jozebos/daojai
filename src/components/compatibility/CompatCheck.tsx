@@ -403,6 +403,7 @@ export default function CompatCheck() {
             value={dateA}
             onChange={(e) => setDateA(e.target.value)}
             className="w-full px-3 py-2.5 rounded-xl text-sm bg-surface-midnight/60 text-text-on-dark border border-lavender-500/10 focus:border-accent-gold/40 focus:outline-none focus:ring-1 focus:ring-accent-gold/20 transition-colors"
+            style={{ colorScheme: "dark" }}
           />
         </div>
       </div>
@@ -450,6 +451,7 @@ export default function CompatCheck() {
             value={dateB}
             onChange={(e) => setDateB(e.target.value)}
             className="w-full px-3 py-2.5 rounded-xl text-sm bg-surface-midnight/60 text-text-on-dark border border-lavender-500/10 focus:border-accent-gold/40 focus:outline-none focus:ring-1 focus:ring-accent-gold/20 transition-colors"
+            style={{ colorScheme: "dark" }}
           />
         </div>
       </div>
