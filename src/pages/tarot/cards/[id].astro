@@ -43,7 +43,7 @@ const elementInfo = ELEMENT_META[card.element] ?? ELEMENT_META.spirit;
     <div class="flex flex-col sm:flex-row gap-6 sm:gap-8 mb-8 animate-[fade-in-up_0.8s_ease-out_both]">
       <div
         class="card-detail-image shrink-0 self-center sm:self-start"
-        style={`background: linear-gradient(160deg, ${elementInfo.color}22, ${elementInfo.colorTo}22);`}
+        style="background: none;"
       >
         <img
           src={getCardImageUrl(card.id)}
@@ -124,28 +124,22 @@ const elementInfo = ELEMENT_META[card.element] ?? ELEMENT_META.spirit;
   .card-detail-image {
     width: 200px;
     aspect-ratio: 2 / 3;
-    border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 0.75rem;
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(196, 181, 253, 0.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 213, 128, 0.08);
-    transition: box-shadow 0.3s ease;
+    border: none;
+    background: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
 
   .card-detail-image:hover {
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 213, 128, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 213, 128, 0.1);
   }
 
   .card-detail-element-strip {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    border-radius: 1rem 1rem 0 0;
+    display: none;
   }
 
   .card-detail-number {

@@ -164,7 +164,7 @@ export default function DailyCard() {
               <div
                 className="daily-card-image-area"
                 style={{
-                  background: `linear-gradient(160deg, ${colors.from}22, ${colors.to}22)`,
+                  background: "none",
                   position: "relative",
                   overflow: "hidden",
                 }}

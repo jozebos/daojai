@@ -312,7 +312,7 @@ export default function ThreeCardSpread() {
                     <div
                       className="spread-card-front-design"
                       style={{
-                        background: `linear-gradient(160deg, ${colors.from}18, ${colors.to}18)`,
+                        background: "none",
                         position: "relative",
                         overflow: "hidden",
                         padding: 0,

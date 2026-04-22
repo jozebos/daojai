@@ -58,7 +58,7 @@ const minorBySuit = suits.map((s) => ({
           >
             <div
               class="encyclopedia-card-image"
-              style={`background: ${ELEMENT_GRADIENT[card.element]};`}
+              style="background: none;"
             >
               <img
                 src={getCardImageUrl(card.id)}
@@ -92,7 +92,7 @@ const minorBySuit = suits.map((s) => ({
             >
               <div
                 class="encyclopedia-card-image"
-                style={`background: ${ELEMENT_GRADIENT[card.element]};`}
+                style="background: none;"
               >
                 <img
                   src={getCardImageUrl(card.id)}
@@ -120,37 +120,32 @@ const minorBySuit = suits.map((s) => ({
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 0.625rem;
-    border-radius: 0.875rem;
-    background: rgba(30, 27, 75, 0.3);
-    border: 1px solid rgba(196, 181, 253, 0.08);
+    padding: 0.25rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.75rem;
+    background: none;
+    border: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
   }
 
   .encyclopedia-card:hover {
-    background: rgba(30, 27, 75, 0.55);
-    border-color: rgba(255, 213, 128, 0.2);
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 213, 128, 0.08);
   }
 
   .encyclopedia-card-image {
     width: 100%;
     aspect-ratio: 2 / 3;
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.5rem;
+    border-radius: 0.625rem;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.3s ease;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    transition: all 0.3s ease;
   }
 
   .encyclopedia-card:hover .encyclopedia-card-image {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 12px rgba(255, 213, 128, 0.1);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 0 16px rgba(255, 213, 128, 0.1);
   }
 
   .encyclopedia-card-image img {
